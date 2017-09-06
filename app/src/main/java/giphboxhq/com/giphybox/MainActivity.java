@@ -45,28 +45,29 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(){
         adapter = new GiphyPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new ExploreFragment(), "Explore");
-        adapter.addFragment(new TrendingFragment(), "Hot");
-        adapter.addFragment(new SavedFragment(), "Saved");
+        adapter.addFragment(new ExploreFragment(), "EXPLORE");
+        adapter.addFragment(new TrendingFragment(), "HOT");
+        adapter.addFragment(new SavedFragment(), "SAVED");
         viewPager.setAdapter(adapter);
     }
 
     private void setupTabIcons(){
         TextView exploreTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text_view, null);
-        exploreTab.setText("Explore");
+        exploreTab.setText("EXPLORE");
+        exploreTab.setTextColor(getResources().getColor(R.color.colorAccent));
         exploreTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_search_selected, 0, 0);
         exploreTab.setGravity(Gravity.CENTER);
         tabLayout.getTabAt(0).setCustomView(exploreTab);
 
 
         TextView trendingTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text_view, null);
-        trendingTab.setText("Hot");
+        trendingTab.setText("HOT");
         trendingTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_whatshot, 0, 0);
         tabLayout.getTabAt(1).setCustomView(trendingTab);
         trendingTab.setGravity(Gravity.CENTER);
 
         TextView savedTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text_view, null);
-        savedTab.setText("Saved");
+        savedTab.setText("SAVED");
         savedTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite, 0, 0);
         tabLayout.getTabAt(2).setCustomView(savedTab);
         savedTab.setGravity(Gravity.CENTER);
@@ -80,19 +81,25 @@ public class MainActivity extends AppCompatActivity {
 
         switch (tab) {
             case 0:
-//                exploreTab.setTextColor(getResources().getColor(R.color.colorAccent));
-//                trendingTab.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-//                savedTab.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                exploreTab.setTextColor(getResources().getColor(R.color.colorAccent));
+                trendingTab.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                savedTab.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                 exploreTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_search_selected, 0, 0);
                 trendingTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_whatshot, 0, 0);
                 savedTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite, 0, 0);
                 break;
             case 1:
+                exploreTab.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                trendingTab.setTextColor(getResources().getColor(R.color.colorAccent));
+                savedTab.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                 exploreTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_search, 0, 0);
                 savedTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite, 0, 0);
                 trendingTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_whatshot_selected, 0, 0);
                 break;
             case 2:
+                exploreTab.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                trendingTab.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                savedTab.setTextColor(getResources().getColor(R.color.colorAccent));
                 exploreTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_search, 0, 0);
                 trendingTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_whatshot, 0, 0);
                 savedTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite_selected, 0, 0);
