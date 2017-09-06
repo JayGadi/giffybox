@@ -2,6 +2,7 @@ package giphboxhq.com.giphybox;
 
 import android.app.Application;
 
+import giphboxhq.com.giphybox.net.DaggerNetComponent;
 import giphboxhq.com.giphybox.net.NetComponent;
 import giphboxhq.com.giphybox.net.NetModule;
 
@@ -19,10 +20,10 @@ public class GiphyBoxApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-//        netComponent = DaggerNetComponent.builder()
-//                .appModule(new AppModule(this))
-//                .netModule(new NetModule())
-//                .build();
+        netComponent = DaggerNetComponent.builder()
+                .appModule(new AppModule(this))
+                .netModule(new NetModule())
+                .build();
     }
 
     public NetComponent getNetComponent() {
