@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import giphboxhq.com.giphybox.AppModule;
+import giphboxhq.com.giphybox.GiphyBoxApplication;
 import giphboxhq.com.giphybox.Main.ExploreFragment;
 import giphboxhq.com.giphybox.Main.MainActivity;
 
@@ -14,6 +15,7 @@ import giphboxhq.com.giphybox.Main.MainActivity;
 @Singleton
 @Component(modules = {AppModule.class, NetModule.class})
 public interface NetComponent {
+    GiphyBoxApplication application();
     GiphyBoxRestAPI restApi();
     GifRepository gifRepository();
     void inject(MainActivity mainActivity);

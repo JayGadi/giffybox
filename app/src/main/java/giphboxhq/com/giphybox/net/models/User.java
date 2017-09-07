@@ -8,8 +8,9 @@ import java.util.ArrayList;
 
 public class User {
     public String id;
-    public String email;
-    public String password;
-    public ArrayList<String> savedGifs;
-    public ArrayList<String> ratedGifs;
+    public String username;
+    public boolean isAuthenticated;
+
+    public ArrayList<Gif> savedGifs;
+    public ArrayList<Gif> ratedGifs;
 }
