@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="-7dp"
-        android:layout_marginBottom="-10dp"
+        android:layout_marginBottom="-11dp"
         android:indeterminate="true"
         android:visibility="gone"
         android:layout_below="@id/activity_gif_info_toolbar"
@@ -33,25 +33,28 @@
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/activity_gif_info_card_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_height="match_parent"
         android:layout_below="@+id/activity_gif_info_loader"
-        card_view:cardCornerRadius="2dp"
-        card_view:cardElevation="2dp"
+        android:layout_above="@+id/activity_gif_info_controls"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="4dp"
         card_view:cardUseCompatPadding="true">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/activity_gif_info_gif_view"
+            android:layout_gravity="center"
             android:adjustViewBounds="true"/>
+
     </android.support.v7.widget.CardView>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:layout_below="@+id/activity_gif_info_card_view"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/activity_gif_info_controls"
         android:gravity="center">
 
         <ImageButton
@@ -60,6 +63,7 @@
             android:background="@drawable/circular_button_white"
             android:id="@+id/activity_gif_info_downvote"
             android:src="@drawable/ic_thumb_down"
+            android:elevation="4dp"
             />
 
         <ImageButton
@@ -69,6 +73,7 @@
             android:src="@drawable/ic_favorite_filled_in"
             android:background="@drawable/circular_button_white"
             android:id="@+id/activity_gif_info_save"
+            android:elevation="4dp"
             />
 
         <ImageButton
@@ -77,6 +82,7 @@
             android:src="@drawable/ic_thumb_up"
             android:background="@drawable/circular_button_white"
             android:id="@+id/activity_gif_info_upvote"
+            android:elevation="4dp"
             />
 
 

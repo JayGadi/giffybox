@@ -1,4 +1,4 @@
-package giphboxhq.com.giphybox;
+package giphboxhq.com.giphybox.Main;
 
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
@@ -8,16 +8,11 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.TextView;
 
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +22,11 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import giphboxhq.com.giphybox.GifInfo.GifInfoActivity;
+import giphboxhq.com.giphybox.GiphyBoxApplication;
+import giphboxhq.com.giphybox.R;
 import giphboxhq.com.giphybox.net.GifRepository;
 import giphboxhq.com.giphybox.net.GiphyBoxRestAPI;
 import giphboxhq.com.giphybox.net.models.Data;
-import giphboxhq.com.giphybox.net.models.Gif;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import rx.Subscriber;
 
 

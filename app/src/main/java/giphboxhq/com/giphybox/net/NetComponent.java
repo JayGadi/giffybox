@@ -4,9 +4,8 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import giphboxhq.com.giphybox.AppModule;
-import giphboxhq.com.giphybox.ExploreFragment;
-import giphboxhq.com.giphybox.GiphyBoxApplication;
-import giphboxhq.com.giphybox.MainActivity;
+import giphboxhq.com.giphybox.Main.ExploreFragment;
+import giphboxhq.com.giphybox.Main.MainActivity;
 
 /**
  * Created by Owner on 2017-09-06.

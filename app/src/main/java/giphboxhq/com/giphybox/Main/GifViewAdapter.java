@@ -1,4 +1,4 @@
-package giphboxhq.com.giphybox;
+package giphboxhq.com.giphybox.Main;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +15,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import giphboxhq.com.giphybox.R;
 import giphboxhq.com.giphybox.net.models.Gif;
 
 /**

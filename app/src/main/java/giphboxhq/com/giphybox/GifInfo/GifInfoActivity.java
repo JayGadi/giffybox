@@ -1,6 +1,5 @@
 package giphboxhq.com.giphybox.GifInfo;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,13 +9,15 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import giphboxhq.com.giphybox.GifViewAdapter;
 import giphboxhq.com.giphybox.GiphyBoxApplication;
 import giphboxhq.com.giphybox.R;
 
@@ -85,8 +86,13 @@ public class GifInfoActivity extends AppCompatActivity implements GifInfoView {
     public void loadGif(String url) {
         Glide.with(this)
                 .load(url)
-                .asGif()
-                .into(gifView);
+                .into(new GlideDrawableImageViewTarget(gifView){
+                    @Override
+                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
+                        super.onResourceReady(resource, animation);
+                        hideLoading();
+                    }
+                });
     }
 
     @Override

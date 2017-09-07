@@ -1,4 +1,4 @@
-package giphboxhq.com.giphybox;
+package giphboxhq.com.giphybox.Main;
 
 
 import android.os.Bundle;
@@ -18,6 +18,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import giphboxhq.com.giphybox.GiphyBoxApplication;
+import giphboxhq.com.giphybox.R;
 import giphboxhq.com.giphybox.net.GifRepository;
 import giphboxhq.com.giphybox.net.models.Data;
 import giphboxhq.com.giphybox.net.models.Gif;
