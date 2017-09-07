@@ -7,19 +7,36 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import giphboxhq.com.giphybox.net.GifRepository;
+import giphboxhq.com.giphybox.net.GiphyBoxRestAPI;
+import giphboxhq.com.giphybox.net.models.Data;
+import giphboxhq.com.giphybox.net.models.Gif;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import rx.Subscriber;
+
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final String TAG = "MainActivity";
 
     @BindView(R.id.activity_main_tab_layout)
     TabLayout tabLayout;
@@ -28,9 +45,16 @@ public class MainActivity extends AppCompatActivity {
 
     private GiphyPagerAdapter adapter;
 
+    @Inject
+    GifRepository repo;
+    @Inject
+    GiphyBoxRestAPI restApi;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d(TAG, "onCreate: MainActivity");
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
@@ -39,6 +63,27 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
         setupPageChangeListener();
+
+        ((GiphyBoxApplication)getApplication()).getNetComponent().inject(this);
+
+        repo.getTrendingGifs().subscribe(new Subscriber<Data>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError: ", e );
+            }
+
+            @Override
+            public void onNext(Data data) {
+                Log.e(TAG, "onNext: " + data.data.size() );
+            }
+        });
+
+
 
     }
 

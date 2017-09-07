@@ -12,7 +12,8 @@ import giphboxhq.com.giphybox.net.NetModule;
 
 public class GiphyBoxApplication extends Application {
     private static final String TAG = "GiphyBoxApplication";
-    public static final String BASE_URL = "api.giphy.com";
+    public static final String BASE_URL = "http://api.giphy.com";
+    public static final String GIPHY_API_KEY = "f5a33bce64694d2e8642880bdb0b1169";
 
     private NetComponent netComponent;
 

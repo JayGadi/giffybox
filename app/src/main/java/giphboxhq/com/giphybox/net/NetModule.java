@@ -12,7 +12,7 @@ import dagger.Provides;
 import giphboxhq.com.giphybox.GiphyBoxApplication;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -43,11 +43,23 @@ public class NetModule {
     @Singleton
     Retrofit providesRetrofit(Gson gson, OkHttpClient okHttpClient){
         return new Retrofit.Builder()
-                .baseUrl(GiphyBoxApplication.BASE_URL + "/")
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .baseUrl(GiphyBoxApplication.BASE_URL)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(okHttpClient)
                 .build();
+    }
+
+    @Provides
+    @Singleton
+    GiphyBoxRestAPI providesGiphyBoxRestAPI(Retrofit retrofit){
+        return retrofit.create(GiphyBoxRestAPI.class);
+    }
+
+    @Provides
+    @Singleton
+    GifRepository providesGifRepository(GiphyBoxRestAPI restApi){
+        return new GifRepository(restApi);
     }
 
 }
