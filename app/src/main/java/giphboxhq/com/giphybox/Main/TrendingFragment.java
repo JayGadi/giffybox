@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import giphboxhq.com.giphybox.R;
 
-public class TrendingFragment extends Fragment {
+public class TrendingFragment extends Fragment implements TrendingView {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -29,7 +29,7 @@ import rx.Subscriber;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ExploreFragment extends Fragment {
+public class ExploreFragment extends Fragment implements ExploreView {
     private static final String TAG = "ExploreFragment";
     @BindView(R.id.fragment_explore_recycler_view)
     RecyclerView recyclerView;
@@ -40,9 +40,7 @@ public class ExploreFragment extends Fragment {
     private GifViewAdapter adapter;
 
     @Inject
-    GifRepository repo;
-
-
+    MainPresenter presenter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,33 +49,18 @@ public class ExploreFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_explore, container, false);
 
         unbinder = ButterKnife.bind(this, view);
-        ((GiphyBoxApplication) getActivity().getApplication()).getNetComponent().inject(this);
 
-        recyclerView.setHasFixedSize(true);
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
         gifs = new ArrayList<>();
         adapter = new GifViewAdapter(gifs, getActivity());
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-        repo.getTrendingGifs().subscribe(new Subscriber<Data>() {
-            @Override
-            public void onCompleted() {
+        ((MainActivity)getActivity()).setupMainComponent().inject(this);
 
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e(TAG, "onError: ", e );
-            }
-
-            @Override
-            public void onNext(Data data) {
-                gifs.clear();
-                gifs.addAll(data.data);
-                adapter.notifyDataSetChanged();
-            }
-        });
+        presenter.loadTrendingGifs();
 
         return view;
     }
@@ -86,5 +69,23 @@ public class ExploreFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showGifs(List<Gif> gifs) {
+        this.gifs.clear();
+        this.gifs.addAll(gifs);
+        adapter.notifyDataSetChanged();
+
     }
 }

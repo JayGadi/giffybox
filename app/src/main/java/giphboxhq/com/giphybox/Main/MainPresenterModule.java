@@ -12,14 +12,12 @@ import giphboxhq.com.giphybox.scopes.UiScope;
 public class MainPresenterModule {
 
     private ExploreView exploreView;
-    private GifViewAdapterView gifViewAdapterView;
     private MainView mainView;
     private SavedView savedView;
     private TrendingView trendingView;
 
-    public MainPresenterModule(ExploreView exploreView, GifViewAdapterView gifViewAdapterView, MainView mainView, SavedView savedView, TrendingView trendingView) {
+    public MainPresenterModule(ExploreView exploreView, MainView mainView, SavedView savedView, TrendingView trendingView) {
         this.exploreView = exploreView;
-        this.gifViewAdapterView = gifViewAdapterView;
         this.mainView = mainView;
         this.savedView = savedView;
         this.trendingView = trendingView;
@@ -29,12 +27,6 @@ public class MainPresenterModule {
     @Provides
     public ExploreView providesExploreView() {
         return exploreView;
-    }
-
-    @UiScope
-    @Provides
-    public GifViewAdapterView providesGifViewAdapterView() {
-        return gifViewAdapterView;
     }
 
     @UiScope

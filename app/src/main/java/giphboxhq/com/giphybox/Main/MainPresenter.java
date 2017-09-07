@@ -4,6 +4,8 @@ import javax.inject.Inject;
 
 import giphboxhq.com.giphybox.BasePresenter;
 import giphboxhq.com.giphybox.net.GifRepository;
+import giphboxhq.com.giphybox.net.models.Data;
+import rx.Subscriber;
 
 /**
  * Created by Owner on 2017-09-07.
@@ -46,5 +48,24 @@ public class MainPresenter implements BasePresenter {
     @Override
     public void onDestroy() {
 
+    }
+
+    public void loadTrendingGifs(){
+        repo.getTrendingGifs().subscribe(new Subscriber<Data>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Data data) {
+
+            }
+        });
     }
 }

@@ -30,7 +30,7 @@ import giphboxhq.com.giphybox.net.models.Data;
 import rx.Subscriber;
 
 
-public class MainActivity extends AppCompatActivity implements GifViewAdapter.GifViewHolderClickListener{
+public class MainActivity extends AppCompatActivity implements GifViewAdapter.GifViewHolderClickListener, MainView{
     private static final String TAG = "MainActivity";
 
     @BindView(R.id.activity_main_tab_layout)
@@ -39,18 +39,21 @@ public class MainActivity extends AppCompatActivity implements GifViewAdapter.Gi
     ViewPager viewPager;
 
     private GiphyPagerAdapter adapter;
+    private ExploreFragment exploreFragment;
+    private TrendingFragment trendingFragment;
+    private SavedFragment savedFragment;
 
     @Inject
     GifRepository repo;
     @Inject
     GiphyBoxRestAPI restApi;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Log.d(TAG, "onCreate: MainActivity");
         setContentView(R.layout.activity_main);
+        Log.d(TAG, "onCreate: MainActivity");
 
         ButterKnife.bind(this);
 
@@ -58,36 +61,22 @@ public class MainActivity extends AppCompatActivity implements GifViewAdapter.Gi
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
         setupPageChangeListener();
-
-        ((GiphyBoxApplication)getApplication()).getNetComponent().inject(this);
-
-        repo.getTrendingGifs().subscribe(new Subscriber<Data>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e(TAG, "onError: ", e );
-            }
-
-            @Override
-            public void onNext(Data data) {
-                Log.e(TAG, "onNext: " + data.data.size() );
-            }
-        });
-
-
+        setupMainComponent().inject(this);
 
     }
 
+    public MainComponent setupMainComponent(){
+        return DaggerMainComponent.builder()
+                .netComponent(((GiphyBoxApplication)getApplication()).getNetComponent())
+                .mainPresenterModule(new MainPresenterModule(exploreFragment, this, savedFragment, trendingFragment))
+                .build();
+    }
 
     private void setupViewPager(){
         adapter = new GiphyPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new ExploreFragment(), "EXPLORE");
-        adapter.addFragment(new TrendingFragment(), "HOT");
-        adapter.addFragment(new SavedFragment(), "SAVED");
+        adapter.addFragment(exploreFragment = new ExploreFragment(), "EXPLORE");
+        adapter.addFragment(trendingFragment = new TrendingFragment(), "HOT");
+        adapter.addFragment(savedFragment = new SavedFragment(), "SAVED");
         viewPager.setAdapter(adapter);
     }
 

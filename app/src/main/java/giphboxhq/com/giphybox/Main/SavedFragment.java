@@ -13,7 +13,7 @@ import giphboxhq.com.giphybox.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SavedFragment extends Fragment {
+public class SavedFragment extends Fragment implements SavedView{
 
 
     public SavedFragment() {
