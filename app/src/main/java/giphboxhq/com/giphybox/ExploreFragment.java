@@ -55,7 +55,7 @@ public class ExploreFragment extends Fragment {
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         gifs = new ArrayList<>();
-        adapter = new GifViewAdapter(gifs, getContext());
+        adapter = new GifViewAdapter(gifs, getActivity());
         recyclerView.setAdapter(adapter);
 
         repo.getTrendingGifs().subscribe(new Subscriber<Data>() {

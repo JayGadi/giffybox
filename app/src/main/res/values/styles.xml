@@ -10,4 +10,9 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="ActionBar" parent="@style/Widget.AppCompat.ActionBar.Solid">
+        <item name="titleTextColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+    </style>
 </resources>

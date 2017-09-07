@@ -1,5 +1,6 @@
 package giphboxhq.com.giphybox;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,6 +26,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import giphboxhq.com.giphybox.GifInfo.GifInfoActivity;
 import giphboxhq.com.giphybox.net.GifRepository;
 import giphboxhq.com.giphybox.net.GiphyBoxRestAPI;
 import giphboxhq.com.giphybox.net.models.Data;
@@ -36,7 +38,7 @@ import retrofit2.Response;
 import rx.Subscriber;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements GifViewAdapter.GifViewHolderClickListener{
     private static final String TAG = "MainActivity";
 
     @BindView(R.id.activity_main_tab_layout)
@@ -172,6 +174,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onGifSelected(String gif) {
+        Intent intent = new Intent(this, GifInfoActivity.class);
+        intent.putExtra(GifInfoActivity.GIF_IMAGE_URL, gif);
+        startActivity(intent);
+    }
 
     private class GiphyPagerAdapter extends FragmentStatePagerAdapter {
 

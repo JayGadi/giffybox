@@ -25,10 +25,18 @@ public class GifViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private static final String TAG = "GifViewAdapter";
     private List<Gif> gifs;
     private Context context;
+    private GifViewHolderClickListener listener;
 
     public GifViewAdapter(List<Gif> gifs, Context context) {
         this.gifs = gifs;
         this.context = context;
+
+        try {
+            listener = ((GifViewHolderClickListener) context);
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Activity must implement GifViewHolderClickedListener");
+        }
+
     }
 
     @Override
@@ -38,10 +46,17 @@ public class GifViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         Glide.with(context)
                 .load(gifs.get(position).images.get("downsized_still").url)
                 .into(((GifViewHolder)holder).gifImageView);
+
+        ((GifViewHolder)holder).gifImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onGifSelected(gifs.get(position).images.get("downsized").url);
+            }
+        });
 
 
     }
@@ -59,5 +74,9 @@ public class GifViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    public interface GifViewHolderClickListener{
+        void onGifSelected(String gif);
     }
 }

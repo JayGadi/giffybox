@@ -1,5 +1,6 @@
 package giphboxhq.com.giphybox.net.models;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -10,6 +11,7 @@ public class Gif {
     public String type;
     public String id;
     public String url;
+    public List<String> tags;
 
     public Map<String, GiphyImage> images;
 

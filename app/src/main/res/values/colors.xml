@@ -4,4 +4,9 @@
     <color name="colorPrimaryDark">#1B2238</color>
     <color name="colorAccent">#F15E4A</color>
     <color name="white">#FFF</color>
+    <color name="fadedWhite">#80FFFFFF</color>
+    <color name="gray">#EBEEF2</color>
+    <color name="red">#e25345</color>
+    <color name="green">#a6c675</color>
+    <color name="yellow">#f5d02a</color>
 </resources>
