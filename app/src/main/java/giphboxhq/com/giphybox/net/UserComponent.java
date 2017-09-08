@@ -10,8 +10,9 @@ import giphboxhq.com.giphybox.scopes.UserScope;
  */
 
 @UserScope
-@Component(modules = UserModule.class, dependencies = NetModule.class)
+@Component(modules = UserModule.class, dependencies = NetComponent.class)
 public interface UserComponent {
-    void inject(LoginActivity loginActivity);
-    void inject(MainActivity mainActivity);
+    GifRepository gifRepository();
+    GiphyBoxRestAPI restApi();
+    UserRepository userRepository();
 }

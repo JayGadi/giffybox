@@ -7,8 +7,10 @@ import giphboxhq.com.giphybox.net.models.User;
  */
 
 public class UserRepository {
+    private static final String TAG = "UserRepository";
+    private static final String AUTH_USER_KEY = "auth_user_key";
+    private DbHelper dbHelper;
 
-    DbHelper dbHelper;
 
     public UserRepository(DbHelper dbHelper) {
         this.dbHelper = dbHelper;
@@ -18,13 +20,18 @@ public class UserRepository {
         return dbHelper.saveToDb(user, user.username);
     }
 
-    public boolean isAuthenticated(User user){
-        return user.isAuthenticated;
+    public void setAuthenticatedUser(User user){
+        dbHelper.saveToDb(user, AUTH_USER_KEY);
     }
 
-    public void setAuthentication(User user, boolean auth){
-        user.isAuthenticated = auth;
+    public void removeAuthenticatedUser(){
+        dbHelper.removeFromDb(AUTH_USER_KEY);
     }
+
+    public User getAuthenticatedUser(){
+        return dbHelper.getFromDb(User.class, AUTH_USER_KEY);
+    }
+
     public User loadUser(User user){
         if(dbHelper.getFromDb(User.class, user.username) == null){
             return saveUser(user);

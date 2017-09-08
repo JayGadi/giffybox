@@ -65,5 +65,16 @@ public class DbHelper {
         }
     }
 
+    public void removeFromDb(String key){
+        DB db = getDatabase();
+        synchronized (db){
+            try{
+                db.del(key);
+            } catch (SnappydbException e){
+                Log.e(TAG, "saveToDb: Could not write to db", e );
+            }
+        }
+    }
+
 
 }

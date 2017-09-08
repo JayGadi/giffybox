@@ -1,5 +1,7 @@
 package giphboxhq.com.giphybox;
 
+import android.content.Context;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -15,6 +17,12 @@ public class AppModule {
 
     public AppModule(GiphyBoxApplication giphyBoxApplication) {
         this.giphyBoxApplication = giphyBoxApplication;
+    }
+
+    @Provides
+    @Singleton
+    Context providesApplicationContext(){
+        return giphyBoxApplication.getApplicationContext();
     }
 
     @Provides

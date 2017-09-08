@@ -5,4 +5,5 @@ package giphboxhq.com.giphybox.Main;
  */
 
 public interface MainView {
+    void launchLoginActivity();
 }

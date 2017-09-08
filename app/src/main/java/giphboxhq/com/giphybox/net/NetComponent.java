@@ -1,5 +1,7 @@
 package giphboxhq.com.giphybox.net;
 
+import android.content.Context;
+
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -16,8 +18,7 @@ import giphboxhq.com.giphybox.Main.MainActivity;
 @Component(modules = {AppModule.class, NetModule.class})
 public interface NetComponent {
     GiphyBoxApplication application();
+    Context context();
     GiphyBoxRestAPI restApi();
     GifRepository gifRepository();
-    void inject(MainActivity mainActivity);
-    void inject(ExploreFragment exploreFragment);
 }

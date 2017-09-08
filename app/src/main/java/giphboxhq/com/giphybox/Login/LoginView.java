@@ -5,4 +5,6 @@ package giphboxhq.com.giphybox.Login;
  */
 
 public interface LoginView {
+    void showForm();
+    void goToMainActivity();
 }

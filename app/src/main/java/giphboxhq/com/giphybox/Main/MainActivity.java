@@ -23,9 +23,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import giphboxhq.com.giphybox.GifInfo.GifInfoActivity;
 import giphboxhq.com.giphybox.GiphyBoxApplication;
+import giphboxhq.com.giphybox.Login.LoginActivity;
 import giphboxhq.com.giphybox.R;
 import giphboxhq.com.giphybox.net.GifRepository;
 import giphboxhq.com.giphybox.net.GiphyBoxRestAPI;
+import giphboxhq.com.giphybox.net.UserRepository;
 import giphboxhq.com.giphybox.net.models.Data;
 import rx.Subscriber;
 
@@ -44,9 +46,8 @@ public class MainActivity extends AppCompatActivity implements GifViewAdapter.Gi
     private SavedFragment savedFragment;
 
     @Inject
-    GifRepository repo;
-    @Inject
-    GiphyBoxRestAPI restApi;
+    MainPresenter presenter;
+
 
 
     @Override
@@ -63,13 +64,29 @@ public class MainActivity extends AppCompatActivity implements GifViewAdapter.Gi
         setupPageChangeListener();
         setupMainComponent().inject(this);
 
+        presenter.onCreate();
+
     }
 
     public MainComponent setupMainComponent(){
         return DaggerMainComponent.builder()
-                .netComponent(((GiphyBoxApplication)getApplication()).getNetComponent())
+                .userComponent(((GiphyBoxApplication)getApplication()).getUserComponent())
                 .mainPresenterModule(new MainPresenterModule(exploreFragment, this, savedFragment, trendingFragment))
                 .build();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.onResume();
+    }
+
+    @Override
+    public void launchLoginActivity(){
+        Intent loginIntent = new Intent(this, LoginActivity.class);
+        loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivityForResult(loginIntent, GiphyBoxApplication.LOGIN_REQUEST_CODE);
+
     }
 
     private void setupViewPager(){

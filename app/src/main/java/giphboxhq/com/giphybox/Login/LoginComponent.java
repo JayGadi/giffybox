@@ -2,6 +2,7 @@ package giphboxhq.com.giphybox.Login;
 
 import dagger.Component;
 import dagger.Module;
+import giphboxhq.com.giphybox.net.UserComponent;
 import giphboxhq.com.giphybox.scopes.UiScope;
 
 /**
@@ -10,7 +11,7 @@ import giphboxhq.com.giphybox.scopes.UiScope;
 
 
 @UiScope
-@Component(modules = LoginModule.class)
+@Component(modules = LoginModule.class, dependencies = UserComponent.class)
 public interface LoginComponent {
     void inject(LoginActivity loginActivity);
 }

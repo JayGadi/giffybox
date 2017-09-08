@@ -1,9 +1,12 @@
 package giphboxhq.com.giphybox.Main;
 
+import android.util.Log;
+
 import javax.inject.Inject;
 
 import giphboxhq.com.giphybox.BasePresenter;
 import giphboxhq.com.giphybox.net.GifRepository;
+import giphboxhq.com.giphybox.net.UserRepository;
 import giphboxhq.com.giphybox.net.models.Data;
 import rx.Subscriber;
 
@@ -12,19 +15,20 @@ import rx.Subscriber;
  */
 
 public class MainPresenter implements BasePresenter {
+    private static final String TAG = "MainPresenter";
 
     private GifRepository repo;
+    private UserRepository userRepository;
     private ExploreView exploreView;
-    private GifViewAdapter gifViewAdapter;
     private MainView mainView;
     private SavedView savedView;
     private TrendingView trendingView;
 
     @Inject
-    public MainPresenter(GifRepository repo, ExploreView exploreView, GifViewAdapter gifViewAdapter, MainView mainView, SavedView savedView, TrendingView trendingView) {
+    public MainPresenter(UserRepository userRepository, GifRepository repo, ExploreView exploreView, MainView mainView, SavedView savedView, TrendingView trendingView) {
         this.repo = repo;
+        this.userRepository = userRepository;
         this.exploreView = exploreView;
-        this.gifViewAdapter = gifViewAdapter;
         this.mainView = mainView;
         this.savedView = savedView;
         this.trendingView = trendingView;
@@ -32,7 +36,7 @@ public class MainPresenter implements BasePresenter {
 
     @Override
     public void onCreate() {
-
+        mainView.launchLoginActivity();
     }
 
     @Override
@@ -42,7 +46,9 @@ public class MainPresenter implements BasePresenter {
 
     @Override
     public void onResume() {
-
+        if(userRepository.getAuthenticatedUser() == null){
+            mainView.launchLoginActivity();
+        }
     }
 
     @Override
@@ -64,7 +70,7 @@ public class MainPresenter implements BasePresenter {
 
             @Override
             public void onNext(Data data) {
-
+                exploreView.showGifs(data.data);
             }
         });
     }

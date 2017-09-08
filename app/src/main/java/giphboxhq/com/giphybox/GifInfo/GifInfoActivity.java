@@ -49,7 +49,7 @@ public class GifInfoActivity extends AppCompatActivity implements GifInfoView {
 
         DaggerGifInfoComponent.builder()
                 .gifInfoModule(new GifInfoModule(this))
-                .netComponent(((GiphyBoxApplication)getApplication()).getNetComponent())
+                .userComponent(((GiphyBoxApplication)getApplication()).getUserComponent())
                 .build()
                 .inject(this);
 

@@ -2,6 +2,8 @@ package giphboxhq.com.giphybox.GifInfo;
 
 import dagger.Component;
 import giphboxhq.com.giphybox.net.NetComponent;
+import giphboxhq.com.giphybox.net.UserComponent;
+import giphboxhq.com.giphybox.net.UserRepository;
 import giphboxhq.com.giphybox.scopes.UiScope;
 
 /**
@@ -9,7 +11,7 @@ import giphboxhq.com.giphybox.scopes.UiScope;
  */
 
 @UiScope
-@Component(dependencies = NetComponent.class, modules = GifInfoModule.class)
+@Component(dependencies = UserComponent.class, modules = GifInfoModule.class)
 public interface GifInfoComponent {
     void inject(GifInfoActivity gifInfoActivity);
 }
