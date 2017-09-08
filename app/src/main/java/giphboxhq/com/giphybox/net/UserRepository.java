@@ -16,7 +16,7 @@ public class UserRepository {
         this.dbHelper = dbHelper;
     }
 
-    private User saveUser(User user){
+    public User saveUser(User user){
         return dbHelper.saveToDb(user, user.username);
     }
 

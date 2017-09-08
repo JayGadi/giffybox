@@ -11,13 +11,13 @@ public class Data {
     public Meta meta;
     public Pagination pagination;
 
-    class Meta {
+    static class Meta {
         public int status;
         public String msg;
         public String response_id;
     }
 
-    class Pagination {
+    static class Pagination {
         public int total_count;
         public int count;
         public int offset;

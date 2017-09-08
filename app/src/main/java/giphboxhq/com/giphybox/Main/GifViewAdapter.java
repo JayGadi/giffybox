@@ -53,7 +53,7 @@ public class GifViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         ((GifViewHolder)holder).gifImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onGifSelected(gifs.get(position).images.get("downsized").url);
+                listener.onGifSelected(gifs.get(position));
             }
         });
 
@@ -76,6 +76,6 @@ public class GifViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public interface GifViewHolderClickListener{
-        void onGifSelected(String gif);
+        void onGifSelected(Gif gif);
     }
 }

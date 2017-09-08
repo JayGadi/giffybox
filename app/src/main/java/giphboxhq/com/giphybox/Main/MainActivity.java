@@ -29,6 +29,7 @@ import giphboxhq.com.giphybox.net.GifRepository;
 import giphboxhq.com.giphybox.net.GiphyBoxRestAPI;
 import giphboxhq.com.giphybox.net.UserRepository;
 import giphboxhq.com.giphybox.net.models.Data;
+import giphboxhq.com.giphybox.net.models.Gif;
 import rx.Subscriber;
 
 
@@ -173,10 +174,16 @@ public class MainActivity extends AppCompatActivity implements GifViewAdapter.Gi
     }
 
     @Override
-    public void onGifSelected(String gif) {
+    public void launchGifInfoActivity(Gif gif) {
         Intent intent = new Intent(this, GifInfoActivity.class);
-        intent.putExtra(GifInfoActivity.GIF_IMAGE_URL, gif);
+        intent.putExtra(GifInfoActivity.GIF_IMAGE_URL, gif.images.get("downsized").url);
+        intent.putExtra(GifInfoActivity.GIF_IMAGE_ID, gif.id);
         startActivity(intent);
+    }
+
+    @Override
+    public void onGifSelected(Gif gif) {
+        presenter.onGifSelected(gif);
     }
 
     private class GiphyPagerAdapter extends FragmentStatePagerAdapter {

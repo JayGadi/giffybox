@@ -4,9 +4,47 @@
     android:layout_height="match_parent"
     tools:context="giphboxhq.com.giphybox.Main.ExploreFragment">
 
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/fragment_explore_search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:foregroundGravity="center"
+        android:animateLayoutChanges="true"
+        android:padding="16dp"
+        android:visibility="visible">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/search_bar_rectangle"
+            android:paddingLeft="8dp"
+            android:textColor="@color/white"
+            android:drawableStart="@drawable/ic_search_small"
+            android:id="@+id/fragment_explorer_search_bar"
+            android:maxLines="1"
+            android:inputType="text"
+            android:drawablePadding="8dp"
+            android:imeOptions="actionSearch"
+            />
+    </android.support.design.widget.AppBarLayout>
+
+    <ProgressBar
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:id="@+id/fragment_explore_loader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-7dp"
+        android:layout_marginBottom="-11dp"
+        android:indeterminate="true"
+        android:visibility="gone"
+        android:layout_below="@id/fragment_explore_search_layout"
+        />
+
     <android.support.v7.widget.RecyclerView
         android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_below="@+id/fragment_explore_loader"
         android:id="@+id/fragment_explore_recycler_view"
         android:scrollbars="vertical"
     />

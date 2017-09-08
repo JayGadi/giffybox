@@ -12,5 +12,6 @@ public interface ExploreView {
     void showLoading();
     void hideLoading();
     void showGifs(List<Gif> gifs);
+    void showSearch(List<Gif> gifs);
 
 }

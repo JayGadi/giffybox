@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -20,10 +22,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import giphboxhq.com.giphybox.GiphyBoxApplication;
 import giphboxhq.com.giphybox.R;
+import giphboxhq.com.giphybox.net.models.Gif;
 
 public class GifInfoActivity extends AppCompatActivity implements GifInfoView {
     private static final String TAG = "GifInfoActivity";
     public static final String GIF_IMAGE_URL = "gif_image_url";
+    public static final String GIF_IMAGE_ID = "gif_image_id";
 
     @BindView(R.id.activity_gif_info_toolbar)
     Toolbar toolbar;
@@ -31,6 +35,12 @@ public class GifInfoActivity extends AppCompatActivity implements GifInfoView {
     ProgressBar loadIndicator;
     @BindView(R.id.activity_gif_info_gif_view)
     ImageView gifView;
+    @BindView(R.id.activity_gif_info_downvote)
+    ImageButton downvoteButton;
+    @BindView(R.id.activity_gif_info_upvote)
+    ImageButton upvoteButton;
+    @BindView(R.id.activity_gif_info_save)
+    ImageButton saveButton;
 
     @Inject
     GifInfoPresenter presenter;
@@ -53,8 +63,8 @@ public class GifInfoActivity extends AppCompatActivity implements GifInfoView {
                 .build()
                 .inject(this);
 
-        String url = getIntent().getStringExtra(GIF_IMAGE_URL);
-        presenter.loadGifFromIntent(url);
+        String id = getIntent().getStringExtra(GIF_IMAGE_ID);
+        presenter.loadGifById(id);
     }
 
     @OnClick(R.id.activity_gif_info_downvote)
@@ -73,6 +83,37 @@ public class GifInfoActivity extends AppCompatActivity implements GifInfoView {
     }
 
     @Override
+    public void setDownvoteButtonSelected() {
+        downvoteButton.setBackground(getResources().getDrawable(R.drawable.circular_button_blue));
+    }
+
+    @Override
+    public void setDownvoteButtonUnSelected() {
+        downvoteButton.setBackground(getResources().getDrawable(R.drawable.circular_button_white));
+
+    }
+
+    @Override
+    public void setUpvoteButtonSelected() {
+        upvoteButton.setBackground(getResources().getDrawable(R.drawable.circular_button_blue));
+    }
+
+    @Override
+    public void setUpvoteButtonUnselected() {
+        upvoteButton.setBackground(getResources().getDrawable(R.drawable.circular_button_white));
+    }
+
+    @Override
+    public void setSaveButtonSelected() {
+        saveButton.setBackground(getResources().getDrawable(R.drawable.circular_button_blue));
+    }
+
+    @Override
+    public void setSaveButtonUnselected() {
+        saveButton.setBackground(getResources().getDrawable(R.drawable.circular_button_white));
+    }
+
+    @Override
     public void showLoading() {
         loadIndicator.setVisibility(View.VISIBLE);
     }
@@ -83,9 +124,9 @@ public class GifInfoActivity extends AppCompatActivity implements GifInfoView {
     }
 
     @Override
-    public void loadGif(String url) {
+    public void loadGif(Gif gif) {
         Glide.with(this)
-                .load(url)
+                .load(gif.images.get("downsized").url)
                 .into(new GlideDrawableImageViewTarget(gifView){
                     @Override
                     public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {

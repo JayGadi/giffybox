@@ -15,7 +15,7 @@ public class Gif {
 
     public Map<String, GiphyImage> images;
 
-    public class GiphyImage {
+    public static class GiphyImage {
         public String url;
         public int width;
         public int height;
@@ -24,5 +24,19 @@ public class Gif {
         public int mp4_size;
         public String webp;
         public int webp_size;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj) return true;
+        if(obj == null || getClass() != obj.getClass()) return false;
+
+        Gif gif = (Gif) obj;
+        return id.equals(gif.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }
