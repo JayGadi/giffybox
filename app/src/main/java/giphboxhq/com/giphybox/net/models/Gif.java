@@ -1,5 +1,7 @@
 package giphboxhq.com.giphybox.net.models;
 
+import android.support.annotation.NonNull;
+
 import java.util.List;
 import java.util.Map;
 
@@ -7,11 +9,12 @@ import java.util.Map;
  * Created by Owner on 2017-09-06.
  */
 
-public class Gif {
+public class Gif implements Comparable<Gif>{
     public String type;
     public String id;
     public String url;
     public List<String> tags;
+    public int ratingCount;
 
     public Map<String, GiphyImage> images;
 
@@ -38,5 +41,10 @@ public class Gif {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    @Override
+    public int compareTo(@NonNull Gif o) {
+        return this.ratingCount < o.ratingCount ? -1: 1;
     }
 }

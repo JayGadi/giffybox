@@ -20,4 +20,5 @@ public interface GifInfoView {
     void setUpvoteButtonUnselected();
     void setSaveButtonSelected();
     void setSaveButtonUnselected();
+    void updateRatingsLabel(int rating);
 }

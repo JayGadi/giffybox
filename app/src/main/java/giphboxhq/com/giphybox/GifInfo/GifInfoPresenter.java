@@ -81,6 +81,20 @@ public class GifInfoPresenter implements BasePresenter {
                 if(userRepository.getAuthenticatedUser().savedGifs.contains(singleGifResponse.data)){
                     view.setSaveButtonSelected();
                 }
+                if(gifRepository.getRatedGifs().contains(singleGifResponse.data)){
+                    Gif cachedGif = null;
+                    Log.e(TAG, "onNext: does contain"  );
+                    for(Gif gif: gifRepository.getRatedGifs()){
+                        if(gif.equals(singleGifResponse.data)){
+                            GifInfoPresenter.this.gif.ratingCount = gif.ratingCount;
+                            cachedGif = gif;
+                        }
+                    }
+                    if(cachedGif != null)
+                        view.updateRatingsLabel(cachedGif.ratingCount);
+                }else{
+                    Log.e(TAG, "onNext: does not contain"  );
+                }
             }
         });
     }
@@ -90,14 +104,19 @@ public class GifInfoPresenter implements BasePresenter {
         if(!user.downvotedGifs.contains(gif)){
             user.downvotedGifs.add(gif);
             view.setDownvoteButtonSelected();
+            gif.ratingCount--;
             if(user.upvotedGifs.contains(gif)){
+                gif.ratingCount--;
                 view.setUpvoteButtonUnselected();
                 user.upvotedGifs.remove(gif);
             }
         }else{
+            gif.ratingCount++;
             view.setDownvoteButtonUnSelected();
             user.downvotedGifs.remove(gif);
         }
+        gifRepository.saveRatedGif(gif);
+        view.updateRatingsLabel(gif.ratingCount);
         userRepository.setAuthenticatedUser(user);
         userRepository.saveUser(user);
     }
@@ -107,14 +126,19 @@ public class GifInfoPresenter implements BasePresenter {
         if(!user.upvotedGifs.contains(gif)){
             user.upvotedGifs.add(gif);
             view.setUpvoteButtonSelected();
+            gif.ratingCount++;
             if(user.downvotedGifs.contains(gif)){
                 view.setDownvoteButtonUnSelected();
+                gif.ratingCount++;
                 user.downvotedGifs.remove(gif);
             }
         }else{
+            gif.ratingCount--;
             view.setUpvoteButtonUnselected();
             user.upvotedGifs.remove(gif);
         }
+        gifRepository.saveRatedGif(gif);
+        view.updateRatingsLabel(gif.ratingCount);
         userRepository.setAuthenticatedUser(user);
         userRepository.saveUser(user);
     }
@@ -128,7 +152,6 @@ public class GifInfoPresenter implements BasePresenter {
             user.savedGifs.remove(gif);
             view.setSaveButtonUnselected();
         }
-
         userRepository.setAuthenticatedUser(user);
         userRepository.saveUser(user);
     }

@@ -81,13 +81,21 @@ public class DbHelper {
 
     public <T> T saveToList(T o, String key, Class<T> klass){
         List<T> results = getListFromDb(klass, key);
-        if(results != null){
+        if(results == null){
+            results = new ArrayList<>();
             results.add(o);
-            saveToDb(results.toArray(), key);
-            return o;
+        }else if(results.size() == 0){
+            results.add(o);
+        }else{
+            int index = results.indexOf(o);
+            if(index == -1){
+                results.add(o);
+            }else{
+                results.set(index, o);
+            }
         }
-
-        return null;
+        saveToDb(results.toArray(), key);
+        return o;
     }
 
     public <T> T saveToDb(T o, String key){

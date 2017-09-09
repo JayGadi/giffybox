@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -41,6 +42,8 @@ public class GifInfoActivity extends AppCompatActivity implements GifInfoView {
     ImageButton upvoteButton;
     @BindView(R.id.activity_gif_info_save)
     ImageButton saveButton;
+    @BindView(R.id.activity_gif_info_rating)
+    TextView ratingLabel;
 
     @Inject
     GifInfoPresenter presenter;
@@ -139,6 +142,11 @@ public class GifInfoActivity extends AppCompatActivity implements GifInfoView {
     @Override
     public void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void updateRatingsLabel(int rating) {
+        ratingLabel.setText("Rating: " + rating);
     }
 
     @Override

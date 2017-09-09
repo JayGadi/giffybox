@@ -3,6 +3,7 @@ package giphboxhq.com.giphybox.net;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -49,21 +50,29 @@ public class GifRepository {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public void saveDownvotedGif(Gif gif){
-        dbHelper.saveToList(gif, GiphyBoxApplication.DOWNVOTE_GIFS_KEY, Gif.class);
+    public void saveRatedGif(Gif gif){
+            dbHelper.saveToList(gif, GiphyBoxApplication.RATED_GIFS_KEY, Gif.class);
     }
 
-    public void saveUpvotedGif(Gif gif){
-        dbHelper.saveToList(gif, GiphyBoxApplication.UPVOTE_GIFS_KEY, Gif.class);
+    public void saveRatedGifList(List<Gif> gifs){
+        dbHelper.saveToDb(gifs.toArray(), GiphyBoxApplication.RATED_GIFS_KEY);
     }
 
-    public List<Gif> getUpvotedGifs(){
-        return dbHelper.getListFromDb(Gif.class, GiphyBoxApplication.UPVOTE_GIFS_KEY);
+    public List<Gif> getRatedGifs(){
+        List<Gif> gifs = dbHelper.getListFromDb(Gif.class, GiphyBoxApplication.RATED_GIFS_KEY);
+        if(gifs != null) {
+            for (int i = 0; i < gifs.size(); i++) {
+                if (gifs.get(i).ratingCount == 0) {
+                    gifs.remove(i);
+                }
+            }
+            saveRatedGifList(gifs);
+        }else{
+            gifs = new ArrayList<>();
+        }
+        return gifs;
     }
 
-    public List<Gif> getDownvitedGifs(Gif gif){
-        return dbHelper.getListFromDb(Gif.class, GiphyBoxApplication.DOWNVOTE_GIFS_KEY);
-    }
 
 
 }
