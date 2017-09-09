@@ -28,15 +28,17 @@ public class MainPresenter implements BasePresenter {
     private MainView mainView;
     private SavedView savedView;
     private TrendingView trendingView;
+    private ControversialView controversialView;
 
     @Inject
-    public MainPresenter(UserRepository userRepository, GifRepository repo, ExploreView exploreView, MainView mainView, SavedView savedView, TrendingView trendingView) {
+    public MainPresenter(UserRepository userRepository, GifRepository repo, ExploreView exploreView, MainView mainView, SavedView savedView, TrendingView trendingView, ControversialView controversialView) {
         this.repo = repo;
         this.userRepository = userRepository;
         this.exploreView = exploreView;
         this.mainView = mainView;
         this.savedView = savedView;
         this.trendingView = trendingView;
+        this.controversialView = controversialView;
     }
 
     @Override
@@ -113,7 +115,23 @@ public class MainPresenter implements BasePresenter {
         savedView.loadSavedGifs(gifs);
     }
 
+    public void getUpvotedGifs(){
+        trendingView.loadRatedGifs(repo.getUpvotedGifs());
+    }
+
+    public void getDownvotedGifs(){
+        controversialView.loadRatedGifs(repo.getDownvotedGifs());
+    }
     public void onGifSelected(Gif gif){
         mainView.launchGifInfoActivity(gif);
+    }
+
+    public void logout(){
+        userRepository.removeAuthenticatedUser();
+        exploreView.recreateActivity();
+    }
+
+    public boolean isAuthenticated(){
+        return userRepository.getAuthenticatedUser() != null;
     }
 }

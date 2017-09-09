@@ -81,19 +81,13 @@ public class GifInfoPresenter implements BasePresenter {
                 if(userRepository.getAuthenticatedUser().savedGifs.contains(singleGifResponse.data)){
                     view.setSaveButtonSelected();
                 }
-                if(gifRepository.getRatedGifs().contains(singleGifResponse.data)){
-                    Gif cachedGif = null;
-                    Log.e(TAG, "onNext: does contain"  );
-                    for(Gif gif: gifRepository.getRatedGifs()){
-                        if(gif.equals(singleGifResponse.data)){
-                            GifInfoPresenter.this.gif.ratingCount = gif.ratingCount;
-                            cachedGif = gif;
-                        }
-                    }
-                    if(cachedGif != null)
-                        view.updateRatingsLabel(cachedGif.ratingCount);
-                }else{
-                    Log.e(TAG, "onNext: does not contain"  );
+
+                Gif cachedGif;
+                int index = gifRepository.getRatedGifs().indexOf(singleGifResponse.data);
+                if(index > -1){
+                    cachedGif = gifRepository.getRatedGifs().get(index);
+                    gif.ratingCount = cachedGif.ratingCount;
+                    view.updateRatingsLabel(cachedGif.ratingCount);
                 }
             }
         });

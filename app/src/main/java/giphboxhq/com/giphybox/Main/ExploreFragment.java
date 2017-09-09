@@ -3,15 +3,19 @@ package giphboxhq.com.giphybox.Main;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -42,6 +46,8 @@ public class ExploreFragment extends Fragment implements ExploreView {
     EditText searchBar;
     @BindView(R.id.fragment_explore_loader)
     ProgressBar loader;
+    @BindView(R.id.fragment_explore_logout)
+    ImageView logout;
 
     private StaggeredGridLayoutManager layoutManager;
     private Unbinder unbinder;
@@ -66,6 +72,8 @@ public class ExploreFragment extends Fragment implements ExploreView {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+
+        addOverflowMenu();
         setupSearchListener();
 
         ((MainActivity)getActivity()).setupMainComponent().inject(this);
@@ -121,5 +129,34 @@ public class ExploreFragment extends Fragment implements ExploreView {
         this.gifs.clear();
         this.gifs.addAll(gifs);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void recreateActivity() {
+        ((MainActivity)getActivity()).launchLoginActivity();
+    }
+
+    private void addOverflowMenu(){
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(getContext(), v);
+                MenuInflater inflater = popup.getMenuInflater();
+                inflater.inflate(R.menu.logout_menu, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        int id = item.getItemId();
+                        switch (id){
+                            case R.id.action_logout:
+                                presenter.logout();
+                                return true;
+                        }
+                        return false;
+                    }
+                });
+                popup.show();
+            }
+        });
     }
 }

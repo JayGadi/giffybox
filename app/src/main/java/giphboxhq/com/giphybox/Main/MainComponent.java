@@ -19,4 +19,5 @@ public interface MainComponent {
     void inject(MainActivity mainActivity);
     void inject(SavedFragment savedFragment);
     void inject(TrendingFragment trendingFragment);
+    void inject(ControversialFragment controversialFragment);
 }

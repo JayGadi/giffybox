@@ -13,5 +13,6 @@ public interface ExploreView {
     void hideLoading();
     void showGifs(List<Gif> gifs);
     void showSearch(List<Gif> gifs);
+    void recreateActivity();
 
 }

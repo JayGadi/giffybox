@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -32,47 +33,69 @@ public class GifRepository {
         this.dbHelper = dbHelper;
     }
 
-    public Observable<Data> getTrendingGifs(){
+    public Observable<Data> getTrendingGifs() {
         return restApi.getTrendingGifs()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable<Data> searchGifs(String tags){
+    public Observable<Data> searchGifs(String tags) {
         return restApi.searchGifs(tags, GiphyBoxApplication.GIPHY_API_KEY)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable<SingleGifResponse> getGifById(String gifId){
+    public Observable<SingleGifResponse> getGifById(String gifId) {
         return restApi.getGifById(gifId, GiphyBoxApplication.GIPHY_API_KEY)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public void saveRatedGif(Gif gif){
-            dbHelper.saveToList(gif, GiphyBoxApplication.RATED_GIFS_KEY, Gif.class);
+    public void saveRatedGif(Gif gif) {
+        dbHelper.saveToList(gif, GiphyBoxApplication.RATED_GIFS_KEY, Gif.class);
     }
 
-    public void saveRatedGifList(List<Gif> gifs){
+    public void saveRatedGifList(List<Gif> gifs) {
         dbHelper.saveToDb(gifs.toArray(), GiphyBoxApplication.RATED_GIFS_KEY);
     }
 
-    public List<Gif> getRatedGifs(){
+    public List<Gif> getRatedGifs() {
         List<Gif> gifs = dbHelper.getListFromDb(Gif.class, GiphyBoxApplication.RATED_GIFS_KEY);
-        if(gifs != null) {
+        if (gifs != null) {
             for (int i = 0; i < gifs.size(); i++) {
                 if (gifs.get(i).ratingCount == 0) {
                     gifs.remove(i);
                 }
             }
             saveRatedGifList(gifs);
-        }else{
+        } else {
             gifs = new ArrayList<>();
         }
         return gifs;
     }
 
+    public List<Gif> getUpvotedGifs() {
+        List<Gif> gifs = getRatedGifs();
+        List<Gif> results = new ArrayList<>();
+        for (Gif gif : gifs) {
+            if (gif.ratingCount > 0) {
+                results.add(gif);
+            }
+        }
+        Collections.sort(results);
+        return results;
+    }
 
+    public List<Gif> getDownvotedGifs(){
+        List<Gif> gifs = getRatedGifs();
+        List<Gif> results = new ArrayList<>();
+        for (Gif gif : gifs) {
+            if (gif.ratingCount < 0) {
+                results.add(gif);
+            }
+        }
+        Collections.sort(results);
+        return results;
+    }
 
 }
