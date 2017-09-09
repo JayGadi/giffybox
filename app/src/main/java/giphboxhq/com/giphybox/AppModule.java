@@ -6,6 +6,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import giphboxhq.com.giphybox.net.DbHelper;
+import giphboxhq.com.giphybox.scopes.UserScope;
 
 /**
  * Created by Owner on 2017-09-06.
@@ -31,7 +33,10 @@ public class AppModule {
         return giphyBoxApplication;
     }
 
-
-
+    @Singleton
+    @Provides
+    DbHelper providesDbHelper(Context context){
+        return new DbHelper(context);
+    }
 
 }

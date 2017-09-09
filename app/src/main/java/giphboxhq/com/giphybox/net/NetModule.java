@@ -58,8 +58,8 @@ public class NetModule {
 
     @Provides
     @Singleton
-    GifRepository providesGifRepository(GiphyBoxRestAPI restApi){
-        return new GifRepository(restApi);
+    GifRepository providesGifRepository(GiphyBoxRestAPI restApi, DbHelper dbHelper){
+        return new GifRepository(restApi, dbHelper);
     }
 
 }

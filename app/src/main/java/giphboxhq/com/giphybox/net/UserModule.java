@@ -17,12 +17,6 @@ public class UserModule {
 
     @UserScope
     @Provides
-    DbHelper providesDbHelper(Context context){
-        return new DbHelper(context);
-    }
-
-    @UserScope
-    @Provides
     UserRepository providesUserRepository(DbHelper dbHelper){
         return new UserRepository(dbHelper);
     }

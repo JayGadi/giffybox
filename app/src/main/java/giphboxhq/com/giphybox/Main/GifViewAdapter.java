@@ -39,7 +39,6 @@ public class GifViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private List<Gif> gifs;
     private Context context;
     private GifViewHolderClickListener listener;
-    private boolean isGifRunning;
 
     public GifViewAdapter(List<Gif> gifs, Context context) {
         this.gifs = gifs;
@@ -106,11 +105,6 @@ public class GifViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         ((Activity)context).runOnUiThread(new Runnable() {
             @Override
             public void run() {
-//                GlideDrawableImageViewTarget viewTarget = new GlideDrawableImageViewTarget(gifView);
-//                Glide.with(context)
-//                        .load(url)
-//                        .dontAnimate()
-//                        .into(viewTarget);
                 if(asBitmap){
                     Glide.with(context)
                             .load(url)

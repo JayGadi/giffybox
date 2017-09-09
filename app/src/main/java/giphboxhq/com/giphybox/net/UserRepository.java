@@ -1,5 +1,7 @@
 package giphboxhq.com.giphybox.net;
 
+import javax.inject.Inject;
+
 import giphboxhq.com.giphybox.net.models.User;
 
 /**
@@ -11,7 +13,7 @@ public class UserRepository {
     private static final String AUTH_USER_KEY = "auth_user_key";
     private DbHelper dbHelper;
 
-
+    @Inject
     public UserRepository(DbHelper dbHelper) {
         this.dbHelper = dbHelper;
     }

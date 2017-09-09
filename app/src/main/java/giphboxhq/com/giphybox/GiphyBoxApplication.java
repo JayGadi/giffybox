@@ -17,8 +17,11 @@ public class GiphyBoxApplication extends Application {
     private static final String TAG = "GiphyBoxApplication";
     public static final String BASE_URL = "http://api.giphy.com";
     public static final String GIPHY_API_KEY = "f5a33bce64694d2e8642880bdb0b1169";
+    public static final String DOWNVOTE_GIFS_KEY = "downvote_key";
+    public static final String UPVOTE_GIFS_KEY = "upvote_key";
 
     public static final int LOGIN_REQUEST_CODE = 1;
+
 
     private NetComponent netComponent;
     private UserComponent userComponent;

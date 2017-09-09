@@ -7,6 +7,9 @@ import com.snappydb.DB;
 import com.snappydb.DBFactory;
 import com.snappydb.SnappydbException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 /**
@@ -52,6 +55,41 @@ public class DbHelper {
         }
     }
 
+    public <T> List<T> getListFromDb(Class<T> klass, String key){
+        DB db = getDatabase();
+        synchronized (db){
+            T[] o = null;
+            try {
+                if (!db.exists(key))
+                    return null;
+
+                o = db.getObjectArray(key, klass);
+            }catch (SnappydbException e){
+                Log.e(TAG, "getListFromDb: ", e);
+            }
+
+            if (o == null){
+                return null;
+            }
+            ArrayList<T> results = new ArrayList<>();
+            for(int i = 0; i < o.length; i++){
+                results.add(o[i]);
+            }
+            return results;
+        }
+    }
+
+    public <T> T saveToList(T o, String key, Class<T> klass){
+        List<T> results = getListFromDb(klass, key);
+        if(results != null){
+            results.add(o);
+            saveToDb(results.toArray(), key);
+            return o;
+        }
+
+        return null;
+    }
+
     public <T> T saveToDb(T o, String key){
         DB db = getDatabase();
         synchronized (db){
@@ -75,6 +113,8 @@ public class DbHelper {
             }
         }
     }
+
+
 
 
 }

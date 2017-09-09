@@ -21,4 +21,5 @@ public interface NetComponent {
     Context context();
     GiphyBoxRestAPI restApi();
     GifRepository gifRepository();
+    DbHelper dbHelper();
 }
