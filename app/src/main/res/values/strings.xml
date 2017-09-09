@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">GiphyBox</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="explore_tab_title">EXPLORE</string>
+    <string name="hot_tab_title">HOT</string>
+    <string name="controversial_tab_title">CONT</string>
+    <string name="saved_tab_title">SAVED</string>
 </resources>

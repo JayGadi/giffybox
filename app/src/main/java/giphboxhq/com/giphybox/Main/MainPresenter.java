@@ -104,24 +104,6 @@ public class MainPresenter implements BasePresenter {
         });
     }
 
-    public void loadGifById(String id){
-        repo.getGifById(id).subscribe(new Subscriber<SingleGifResponse>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(SingleGifResponse data) {
-
-            }
-        });
-    }
 
     public void loadSavedGifs(){
         ArrayList<Gif> gifs = new ArrayList<>();

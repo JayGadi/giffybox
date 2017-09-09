@@ -4,5 +4,5 @@
     android:layout_height="wrap_content"
     android:id="@+id/tab"
     android:textColor="@color/colorPrimaryDark"
-    android:textSize="12sp"
+    android:textSize="10sp"
     android:fontFamily="sans-serif-medium"/>

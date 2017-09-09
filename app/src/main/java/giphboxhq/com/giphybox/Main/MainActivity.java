@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements GifViewAdapter.Gi
     private GiphyPagerAdapter adapter;
     private ExploreFragment exploreFragment;
     private TrendingFragment trendingFragment;
+    private ControversialFragment controversialFragment;
     private SavedFragment savedFragment;
 
     @Inject
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements GifViewAdapter.Gi
     public MainComponent setupMainComponent(){
         return DaggerMainComponent.builder()
                 .userComponent(((GiphyBoxApplication)getApplication()).getUserComponent())
-                .mainPresenterModule(new MainPresenterModule(exploreFragment, this, savedFragment, trendingFragment))
+                .mainPresenterModule(new MainPresenterModule(exploreFragment, this, savedFragment, trendingFragment, controversialFragment))
                 .build();
     }
 
@@ -94,13 +95,14 @@ public class MainActivity extends AppCompatActivity implements GifViewAdapter.Gi
         adapter = new GiphyPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(exploreFragment = new ExploreFragment(), "EXPLORE");
         adapter.addFragment(trendingFragment = new TrendingFragment(), "HOT");
+        adapter.addFragment(controversialFragment = new ControversialFragment(), "CONT");
         adapter.addFragment(savedFragment = new SavedFragment(), "SAVED");
         viewPager.setAdapter(adapter);
     }
 
     private void setupTabIcons(){
         TextView exploreTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text_view, null);
-        exploreTab.setText("EXPLORE");
+        exploreTab.setText(getString(R.string.explore_tab_title));
         exploreTab.setTextColor(getResources().getColor(R.color.colorAccent));
         exploreTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_search_selected, 0, 0);
         exploreTab.setGravity(Gravity.CENTER);
@@ -108,47 +110,72 @@ public class MainActivity extends AppCompatActivity implements GifViewAdapter.Gi
 
 
         TextView trendingTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text_view, null);
-        trendingTab.setText("HOT");
+        trendingTab.setText(getString(R.string.hot_tab_title));
         trendingTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_whatshot, 0, 0);
-        tabLayout.getTabAt(1).setCustomView(trendingTab);
         trendingTab.setGravity(Gravity.CENTER);
+        tabLayout.getTabAt(1).setCustomView(trendingTab);
+
+        TextView controversialTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text_view, null);
+        trendingTab.setText(getString(R.string.controversial_tab_title));
+        trendingTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_trending_down, 0, 0);
+        trendingTab.setGravity(Gravity.CENTER);
+        tabLayout.getTabAt(2).setCustomView(controversialTab);
 
         TextView savedTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text_view, null);
-        savedTab.setText("SAVED");
+        savedTab.setText(R.string.saved_tab_title);
         savedTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite, 0, 0);
-        tabLayout.getTabAt(2).setCustomView(savedTab);
         savedTab.setGravity(Gravity.CENTER);
+        tabLayout.getTabAt(3).setCustomView(savedTab);
+
+        Log.e(TAG, "setupTabIcons: " + ((TextView)tabLayout.getTabAt(1).getCustomView()).getText().toString() );
     }
 
     private void setActiveTabIcon(int tab) {
 
         TextView exploreTab = (TextView) tabLayout.getTabAt(0).getCustomView();
         TextView trendingTab = (TextView) tabLayout.getTabAt(1).getCustomView();
-        TextView savedTab = (TextView) tabLayout.getTabAt(2).getCustomView();
+        TextView controversialTab = (TextView) tabLayout.getTabAt(2).getCustomView();
+        TextView savedTab = (TextView) tabLayout.getTabAt(3).getCustomView();
 
         switch (tab) {
             case 0:
                 exploreTab.setTextColor(getResources().getColor(R.color.colorAccent));
                 trendingTab.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                controversialTab.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                 savedTab.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                 exploreTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_search_selected, 0, 0);
                 trendingTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_whatshot, 0, 0);
+                controversialTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_trending_down, 0, 0);
                 savedTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite, 0, 0);
                 break;
             case 1:
                 exploreTab.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                 trendingTab.setTextColor(getResources().getColor(R.color.colorAccent));
+                controversialTab.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                 savedTab.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                 exploreTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_search, 0, 0);
-                savedTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite, 0, 0);
                 trendingTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_whatshot_selected, 0, 0);
+                controversialTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_trending_down, 0, 0);
+                savedTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite, 0, 0);
                 break;
             case 2:
                 exploreTab.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                 trendingTab.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                controversialTab.setTextColor(getResources().getColor(R.color.colorAccent));
+                savedTab.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                exploreTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_search, 0, 0);
+                trendingTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_whatshot, 0, 0);
+                controversialTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_trending_down_selected, 0, 0);
+                savedTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite, 0, 0);
+                break;
+            case 3:
+                exploreTab.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                trendingTab.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                controversialTab.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                 savedTab.setTextColor(getResources().getColor(R.color.colorAccent));
                 exploreTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_search, 0, 0);
                 trendingTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_whatshot, 0, 0);
+                controversialTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_trending_down, 0, 0);
                 savedTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite_selected, 0, 0);
                 break;
         }
@@ -163,6 +190,7 @@ public class MainActivity extends AppCompatActivity implements GifViewAdapter.Gi
 
             @Override
             public void onPageSelected(int position) {
+                Log.e(TAG, "onPageSelected: " + position );
                 setActiveTabIcon(position);
             }
 

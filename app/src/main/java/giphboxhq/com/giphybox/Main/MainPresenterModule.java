@@ -15,12 +15,14 @@ public class MainPresenterModule {
     private MainView mainView;
     private SavedView savedView;
     private TrendingView trendingView;
+    private ControversialView controversialView;
 
-    public MainPresenterModule(ExploreView exploreView, MainView mainView, SavedView savedView, TrendingView trendingView) {
+    public MainPresenterModule(ExploreView exploreView, MainView mainView, SavedView savedView, TrendingView trendingView, ControversialView controversialView) {
         this.exploreView = exploreView;
         this.mainView = mainView;
         this.savedView = savedView;
         this.trendingView = trendingView;
+        this.controversialView = controversialView;
     }
 
     @UiScope
@@ -46,4 +48,8 @@ public class MainPresenterModule {
     public TrendingView providesTrendingView() {
         return trendingView;
     }
+
+    @UiScope
+    @Provides
+    public  ControversialView providesControversialView(){return controversialView;}
 }
