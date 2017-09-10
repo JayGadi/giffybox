@@ -4,7 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="explore_tab_title">EXPLORE</string>
     <string name="hot_tab_title">HOT</string>
-    <string name="controversial_tab_title">CONT</string>
+    <string name="controversial_tab_title">DOWNHILL</string>
     <string name="saved_tab_title">SAVED</string>
     <string name="menuitem_logout">Logout</string>
 </resources>

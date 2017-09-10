@@ -118,9 +118,9 @@ public class MainActivity extends AppCompatActivity implements GifViewAdapter.Gi
         tabLayout.getTabAt(1).setCustomView(trendingTab);
 
         TextView controversialTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text_view, null);
-        trendingTab.setText(getString(R.string.controversial_tab_title));
-        trendingTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_trending_down, 0, 0);
-        trendingTab.setGravity(Gravity.CENTER);
+        controversialTab.setText(getString(R.string.controversial_tab_title));
+        controversialTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_trending_down, 0, 0);
+        controversialTab.setGravity(Gravity.CENTER);
         tabLayout.getTabAt(2).setCustomView(controversialTab);
 
         TextView savedTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text_view, null);
@@ -128,8 +128,8 @@ public class MainActivity extends AppCompatActivity implements GifViewAdapter.Gi
         savedTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite, 0, 0);
         savedTab.setGravity(Gravity.CENTER);
         tabLayout.getTabAt(3).setCustomView(savedTab);
-
-        Log.e(TAG, "setupTabIcons: " + ((TextView)tabLayout.getTabAt(1).getCustomView()).getText().toString() );
+//
+//        Log.e(TAG, "setupTabIcons: " + ((TextView)tabLayout.getTabAt(1).getCustomView()).getText().toString() );
     }
 
     private void setActiveTabIcon(int tab) {
