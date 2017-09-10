@@ -1,5 +1,6 @@
 package giphboxhq.com.giphybox.GifInfo;
 
+import android.nfc.Tag;
 import android.util.Log;
 
 import com.bumptech.glide.Glide;

@@ -51,7 +51,7 @@ public class LoginPresenter implements BasePresenter{
         User user = new User();
         user.username = username;
 
-        userRepository.loadUser(user);
+        user = userRepository.loadUser(user);
         userRepository.setAuthenticatedUser(user);
         loginView.goToMainActivity();
 

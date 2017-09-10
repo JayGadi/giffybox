@@ -1,5 +1,7 @@
 package giphboxhq.com.giphybox.net;
 
+import android.util.Log;
+
 import javax.inject.Inject;
 
 import giphboxhq.com.giphybox.net.models.User;

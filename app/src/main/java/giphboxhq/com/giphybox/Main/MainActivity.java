@@ -128,8 +128,6 @@ public class MainActivity extends AppCompatActivity implements GifViewAdapter.Gi
         savedTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite, 0, 0);
         savedTab.setGravity(Gravity.CENTER);
         tabLayout.getTabAt(3).setCustomView(savedTab);
-//
-//        Log.e(TAG, "setupTabIcons: " + ((TextView)tabLayout.getTabAt(1).getCustomView()).getText().toString() );
     }
 
     private void setActiveTabIcon(int tab) {
@@ -192,7 +190,6 @@ public class MainActivity extends AppCompatActivity implements GifViewAdapter.Gi
 
             @Override
             public void onPageSelected(int position) {
-                Log.e(TAG, "onPageSelected: " + position );
                 setActiveTabIcon(position);
             }
 

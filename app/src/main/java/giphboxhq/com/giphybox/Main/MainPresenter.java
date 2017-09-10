@@ -176,6 +176,7 @@ public class MainPresenter implements BasePresenter {
     }
 
     public void logout(){
+        userRepository.saveUser(userRepository.getAuthenticatedUser());
         userRepository.removeAuthenticatedUser();
         exploreView.recreateActivity();
     }
