@@ -134,7 +134,6 @@ public class MainPresenter implements BasePresenter {
 
     public void loadNextSearchPage(String tags, int offset){
         String searchTerms = tags.replaceAll(" ", "+");
-        exploreView.resetScrollListener();
         exploreView.showLoading();
         repo.searchGifsWithOffset(searchTerms, offset, 10).subscribe(new Subscriber<Data>() {
             @Override

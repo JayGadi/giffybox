@@ -12,7 +12,7 @@ import android.util.Log;
 
 public abstract class GifPageScrollListener extends RecyclerView.OnScrollListener {
     private static final String TAG = "GifPageScrollListener";
-    private GridLayoutManager layoutManager;
+    private StaggeredGridLayoutManager layoutManager;
 
     private int visibleThreshold = 2;
     private int currentPage = 0;
@@ -21,26 +21,39 @@ public abstract class GifPageScrollListener extends RecyclerView.OnScrollListene
     private int startingPageIndex = 0;
 
 
-    public GifPageScrollListener(GridLayoutManager layoutManager) {
+    public GifPageScrollListener(StaggeredGridLayoutManager layoutManager) {
         this.layoutManager = layoutManager;
         visibleThreshold = visibleThreshold * layoutManager.getSpanCount();
     }
 
+    private int getLastVisibleItem(int[] lastVisibleItemPositions){
+        int maxSize = 0;
+        for (int i = 0; i < lastVisibleItemPositions.length; i++) {
+            if (i == 0) {
+                maxSize = lastVisibleItemPositions[i];
+            }
+            else if (lastVisibleItemPositions[i] > maxSize) {
+                maxSize = lastVisibleItemPositions[i];
+            }
+        }
+        return maxSize;
+    }
     @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
 
         int lastVisibleItemPosition = 0;
         int totalItemCount = layoutManager.getItemCount();
-        lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+        int[] lastVisibleItemPositions = layoutManager.findLastVisibleItemPositions(null);
+        lastVisibleItemPosition = getLastVisibleItem(lastVisibleItemPositions);
 
-//        if(totalItemCount < prevTotalItemCount){
-//            this.currentPage = this.startingPageIndex;
-//            this.prevTotalItemCount = totalItemCount;
-//            if(totalItemCount == 0){
-//                this.loading = true;
-//            }
-//        }
+        if(totalItemCount < prevTotalItemCount){
+            this.currentPage = this.startingPageIndex;
+            this.prevTotalItemCount = totalItemCount;
+            if(totalItemCount == 0){
+                this.loading = true;
+            }
+        }
 
         if(loading && (totalItemCount > prevTotalItemCount)){
             loading = false;

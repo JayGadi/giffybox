@@ -53,7 +53,7 @@ public class ExploreFragment extends Fragment implements ExploreView {
     @BindView(R.id.fragment_explore_logout)
     ImageView logout;
 
-    private GridLayoutManager layoutManager;
+    private StaggeredGridLayoutManager layoutManager;
     private Unbinder unbinder;
     private List<Gif> gifs;
     private GifViewAdapter adapter;
@@ -71,7 +71,7 @@ public class ExploreFragment extends Fragment implements ExploreView {
 
         unbinder = ButterKnife.bind(this, view);
 
-        layoutManager = new GridLayoutManager(getContext(), 2);
+        layoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
         gifs = new ArrayList<>();
         adapter = new GifViewAdapter(gifs, getActivity());
 
@@ -81,8 +81,6 @@ public class ExploreFragment extends Fragment implements ExploreView {
         scrollListener = new GifPageScrollListener(layoutManager) {
             @Override
             protected void loadMoreItems(int page, int totalItemCount, RecyclerView view) {
-//                Log.e(TAG, "loadMoreItems: Page = " + page);
-//                Log.e(TAG, "loadMoreItems: totalItemCount = " + totalItemCount );
                 if(page < 250) {
                     if(!isSearching()) {
                         presenter.loadNextTrendingGifsPage(page);
