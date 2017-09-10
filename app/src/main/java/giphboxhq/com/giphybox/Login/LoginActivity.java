@@ -4,7 +4,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -61,7 +60,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
     @Override
     public void goToMainActivity() {
         setResult(RESULT_OK);
-//        overridePendingTransition();
         finish();
+        overridePendingTransition(0, R.anim.fade_out);
     }
 }

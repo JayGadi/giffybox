@@ -88,6 +88,8 @@ public class MainActivity extends AppCompatActivity implements GifViewAdapter.Gi
         Intent loginIntent = new Intent(this, LoginActivity.class);
         loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivityForResult(loginIntent, GiphyBoxApplication.LOGIN_REQUEST_CODE);
+        overridePendingTransition(R.anim.fade_in, 0);
+
 
     }
 

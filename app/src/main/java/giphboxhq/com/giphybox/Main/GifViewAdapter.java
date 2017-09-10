@@ -62,8 +62,8 @@ public class GifViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 
         final GifViewHolder viewHolder = (GifViewHolder)holder;
-        final String url = gifs.get(position).images.get("downsized").url;
-        loadGifToGlide(viewHolder.gifImageView, url, true);
+        final Gif gif = gifs.get(position);
+        loadGifToGlide(viewHolder.gifImageView, gif, true);
         viewHolder.gifImageView.setOnTouchListener(new View.OnTouchListener() {
 
             private Timer timer = new Timer();
@@ -78,7 +78,7 @@ public class GifViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         @Override
                         public void run() {
                             wasLong = true;
-                            loadGifToGlide(viewHolder.gifImageView, url, false);
+                            loadGifToGlide(viewHolder.gifImageView, gif, false);
                         }
                     }, LONG_PRESS_TIMEOUT);
                     return true;
@@ -87,7 +87,7 @@ public class GifViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 if(event.getAction() == MotionEvent.ACTION_UP){
                     timer.cancel();
                     if(wasLong){
-                        loadGifToGlide(viewHolder.gifImageView, url, true);
+                        loadGifToGlide(viewHolder.gifImageView, gif, true);
                         wasLong = false;
                     }else{
                         listener.onGifSelected(gifs.get(position));
@@ -101,20 +101,25 @@ public class GifViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     }
 
-    private void loadGifToGlide(final ImageView gifView, final String url, final boolean asBitmap){
+    private void loadGifToGlide(final ImageView gifView, final Gif gif, final boolean asBitmap){
         ((Activity)context).runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                String url = gif.images.get("downsized").url;
+                int height = gif.images.get("downsized").height;
+                int width = gif.images.get("downsized").width;
                 if(asBitmap){
                     Glide.with(context)
                             .load(url)
                             .asBitmap()
+                            .override(width, height)
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(gifView);
                 }else{
                     Glide.with(context)
                             .load(url)
                             .asGif()
+                            .override(width, height)
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(gifView);
                 }

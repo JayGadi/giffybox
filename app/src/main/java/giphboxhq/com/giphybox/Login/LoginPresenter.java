@@ -61,12 +61,12 @@ public class LoginPresenter implements BasePresenter{
         if(userRepository.getAuthenticatedUser() == null){
             loginView.showForm();
         }else{
-            try {
-                TimeUnit.SECONDS.sleep(5);
-            }catch (InterruptedException e){
-                Log.e(TAG, "checkAuthentication: ", e);
-            }
-            loginView.goToMainActivity();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    loginView.goToMainActivity();
+                }
+            },1000);
         }
     }
 }
