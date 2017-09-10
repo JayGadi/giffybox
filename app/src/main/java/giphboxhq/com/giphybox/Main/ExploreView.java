@@ -14,5 +14,5 @@ public interface ExploreView {
     void showGifs(List<Gif> gifs);
     void showSearch(List<Gif> gifs);
     void recreateActivity();
-
+    void resetScrollListener();
 }

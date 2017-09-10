@@ -1,6 +1,7 @@
 package giphboxhq.com.giphybox.Main;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -28,6 +30,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import giphboxhq.com.giphybox.GifPageScrollListener;
 import giphboxhq.com.giphybox.GiphyBoxApplication;
 import giphboxhq.com.giphybox.R;
 import giphboxhq.com.giphybox.net.GifRepository;
@@ -54,6 +57,8 @@ public class ExploreFragment extends Fragment implements ExploreView {
     private Unbinder unbinder;
     private List<Gif> gifs;
     private GifViewAdapter adapter;
+    private GifPageScrollListener scrollListener;
+    private boolean isSearching = false;
 
     @Inject
     MainPresenter presenter;
@@ -66,7 +71,7 @@ public class ExploreFragment extends Fragment implements ExploreView {
 
         unbinder = ButterKnife.bind(this, view);
 
-        layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        layoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
         gifs = new ArrayList<>();
         adapter = new GifViewAdapter(gifs, getActivity());
 
@@ -74,13 +79,27 @@ public class ExploreFragment extends Fragment implements ExploreView {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+        scrollListener = new GifPageScrollListener(layoutManager) {
+            @Override
+            protected void loadMoreItems(int page, int totalItemCount, RecyclerView view) {
+                if(page < 250) {
+                    if(!isSearching()) {
+                        presenter.loadNextTrendingGifsPage(page);
+                    }else{
+                        presenter.loadNextSearchPage(searchBar.getText().toString(), page);
+                    }
+                }
+            }
+        };
+
+        recyclerView.addOnScrollListener(scrollListener);
 
         addOverflowMenu();
         setupSearchListener();
 
         ((MainActivity)getActivity()).setupMainComponent().inject(this);
 
-        presenter.loadTrendingGifs();
+        presenter.loadFirstTrendingGifsPage();
 
         return view;
     }
@@ -90,6 +109,14 @@ public class ExploreFragment extends Fragment implements ExploreView {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    public boolean isSearching() {
+        return isSearching;
+    }
+
+    public void setSearching(boolean searching) {
+        isSearching = searching;
     }
 
     @Override
@@ -107,12 +134,19 @@ public class ExploreFragment extends Fragment implements ExploreView {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    if(searchBar.getText().toString().isEmpty()){
-                        presenter.loadTrendingGifs();
-                    }else{
-                        presenter.loadSearch(searchBar.getText().toString());
+                    if(v != null){
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+                        if(searchBar.getText().toString().isEmpty()){
+                            setSearching(false);
+                            presenter.loadFirstTrendingGifsPage();
+                        }else{
+                            setSearching(true);
+                            presenter.loadFirstSearchPage(v.getText().toString());
+                        }
+                        return true;
                     }
-                    return true;
                 }
                 return false;
             }
@@ -120,17 +154,21 @@ public class ExploreFragment extends Fragment implements ExploreView {
     }
     @Override
     public void showGifs(List<Gif> gifs) {
-        this.gifs.clear();
         this.gifs.addAll(gifs);
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemRangeInserted(adapter.getItemCount(), gifs.size() - 1);
+    }
 
+    @Override
+    public void resetScrollListener() {
+        this.gifs.clear();
+        adapter.notifyDataSetChanged();
+        scrollListener.resetState();
     }
 
     @Override
     public void showSearch(List<Gif> gifs) {
-        this.gifs.clear();
         this.gifs.addAll(gifs);
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemRangeInserted(adapter.getItemCount(), gifs.size() - 1);
     }
 
     @Override

@@ -36,6 +36,7 @@ import giphboxhq.com.giphybox.net.models.Gif;
 
 public class GifViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String TAG = "GifViewAdapter";
+    private static final String IMAGE_TYPE = "fixed_height";
     private List<Gif> gifs;
     private Context context;
     private GifViewHolderClickListener listener;
@@ -105,9 +106,9 @@ public class GifViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         ((Activity)context).runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                String url = gif.images.get("downsized").url;
-                int height = gif.images.get("downsized").height;
-                int width = gif.images.get("downsized").width;
+                String url = gif.images.get(IMAGE_TYPE).url;
+                int height = gif.images.get(IMAGE_TYPE).height;
+                int width = gif.images.get(IMAGE_TYPE).width;
                 if(asBitmap){
                     Glide.with(context)
                             .load(url)
