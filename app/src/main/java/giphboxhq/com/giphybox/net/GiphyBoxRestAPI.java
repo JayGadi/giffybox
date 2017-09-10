@@ -39,4 +39,19 @@ public interface GiphyBoxRestAPI {
             @Query("api_key") String apiKey
     );
 
+    @GET("/v1/gifs/trending")
+    Observable<Data> getTrendingGifsWithOffset(
+            @Query("api_key") String apiKey,
+            @Query("offset") int offset,
+            @Query("limit") int limit
+    );
+
+    @GET("v1/gifs/search")
+    Observable<Data> searchGifsWithOffset(
+            @Query("api_key") String apiKey,
+            @Query("q") String tags,
+            @Query("offset") int offset,
+            @Query("limit") int limit
+    );
+
 }

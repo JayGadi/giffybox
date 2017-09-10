@@ -63,9 +63,10 @@ public class MainPresenter implements BasePresenter {
 
     }
 
-    public void loadTrendingGifs(){
+    public void loadFirstTrendingGifsPage(){
         exploreView.showLoading();
-        repo.getTrendingGifs().subscribe(new Subscriber<Data>() {
+        exploreView.resetScrollListener();
+        repo.getTrendingGifsWithOffset(0, 10).subscribe(new Subscriber<Data>() {
             @Override
             public void onCompleted() {
 
@@ -73,21 +74,21 @@ public class MainPresenter implements BasePresenter {
 
             @Override
             public void onError(Throwable e) {
-
+                Log.e(TAG, "onError: ", e );
             }
 
             @Override
             public void onNext(Data data) {
+                Log.d(TAG, "onNext: Loading First Trending Gifs Page");
                 exploreView.hideLoading();
                 exploreView.showGifs(data.data);
             }
         });
     }
 
-    public void loadSearch(String tags){
-        String searchTerms = tags.replaceAll(" ", "+");
+    public void loadNextTrendingGifsPage(int offset){
         exploreView.showLoading();
-        repo.searchGifs(searchTerms).subscribe(new Subscriber<Data>() {
+        repo.getTrendingGifsWithOffset(offset, 10).subscribe(new Subscriber<Data>() {
             @Override
             public void onCompleted() {
 
@@ -95,13 +96,62 @@ public class MainPresenter implements BasePresenter {
 
             @Override
             public void onError(Throwable e) {
-
+                Log.e(TAG, "onError: ", e);
             }
 
             @Override
             public void onNext(Data data) {
+                Log.d(TAG, "onNext: Loading Next Trending Gifs Page");
                 exploreView.hideLoading();
-                exploreView.showSearch(data.data);
+                exploreView.showGifs(data.data);
+            }
+        });
+    }
+
+    public void loadFirstSearchPage(String tags){
+        String searchTerms = tags.replaceAll(" ", "+");
+        exploreView.resetScrollListener();
+        exploreView.showLoading();
+        repo.searchGifsWithOffset(searchTerms, 0, 10).subscribe(new Subscriber<Data>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError: ", e);
+            }
+
+            @Override
+            public void onNext(Data data) {
+                Log.d(TAG, "onNext: Loading First Search Page" );
+                exploreView.hideLoading();
+                exploreView.showGifs(data.data);
+            }
+        });
+    }
+
+    public void loadNextSearchPage(String tags, int offset){
+        String searchTerms = tags.replaceAll(" ", "+");
+        exploreView.resetScrollListener();
+        exploreView.showLoading();
+        repo.searchGifsWithOffset(searchTerms, offset, 10).subscribe(new Subscriber<Data>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError: ", e);
+            }
+
+            @Override
+            public void onNext(Data data) {
+                Log.d(TAG, "onNext: Loading Next Search Page" );
+                exploreView.hideLoading();
+                exploreView.showGifs(data.data);
             }
         });
     }

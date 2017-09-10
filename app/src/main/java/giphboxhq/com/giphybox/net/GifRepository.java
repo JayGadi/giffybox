@@ -51,6 +51,19 @@ public class GifRepository {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public Observable<Data> getTrendingGifsWithOffset(int offset, int limit){
+        return restApi.getTrendingGifsWithOffset(GiphyBoxApplication.GIPHY_API_KEY, offset, limit)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<Data> searchGifsWithOffset(String tags, int offset, int limit){
+        return restApi.searchGifsWithOffset(GiphyBoxApplication.GIPHY_API_KEY,
+                tags, offset, limit)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
     public void saveRatedGif(Gif gif) {
         dbHelper.saveToList(gif, GiphyBoxApplication.RATED_GIFS_KEY, Gif.class);
     }
