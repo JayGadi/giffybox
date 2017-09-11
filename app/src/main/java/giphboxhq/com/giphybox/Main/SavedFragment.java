@@ -3,6 +3,7 @@ package giphboxhq.com.giphybox.Main;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -30,6 +31,8 @@ public class SavedFragment extends Fragment implements SavedView{
 
     @BindView(R.id.fragment_saved_recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.saved_fragment_swipre_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private StaggeredGridLayoutManager layoutManager;
     private Unbinder unbinder;
@@ -58,6 +61,12 @@ public class SavedFragment extends Fragment implements SavedView{
         ((MainActivity)getActivity()).setupMainComponent().inject(this);
 
         presenter.loadSavedGifs();
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.loadSavedGifs();
+            }
+        });
 
         return view;
     }
@@ -70,6 +79,7 @@ public class SavedFragment extends Fragment implements SavedView{
 
     @Override
     public void loadSavedGifs(List<Gif> savedGifs) {
+        swipeRefreshLayout.setRefreshing(false);
         gifs.clear();
         gifs.addAll(savedGifs);
         adapter.notifyDataSetChanged();

@@ -45,6 +45,6 @@ public class Gif implements Comparable<Gif>{
 
     @Override
     public int compareTo(@NonNull Gif o) {
-        return this.ratingCount < o.ratingCount ? -1: 1;
+        return this.ratingCount > o.ratingCount ? -1: 1;
     }
 }

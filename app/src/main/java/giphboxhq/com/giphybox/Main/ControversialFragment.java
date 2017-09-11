@@ -3,6 +3,7 @@ package giphboxhq.com.giphybox.Main;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -27,6 +28,8 @@ public class ControversialFragment extends Fragment implements ControversialView
 
     @BindView(R.id.fragment_controversial_recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.fragment_controversial_swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private StaggeredGridLayoutManager layoutManager;
     private Unbinder unbinder;
@@ -55,6 +58,12 @@ public class ControversialFragment extends Fragment implements ControversialView
         ((MainActivity)getActivity()).setupMainComponent().inject(this);
 
         presenter.getDownvotedGifs();
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.getDownvotedGifs();
+            }
+        });
 
         return view;
     }
@@ -68,6 +77,7 @@ public class ControversialFragment extends Fragment implements ControversialView
 
     @Override
     public void loadRatedGifs(List<Gif> savedGifs) {
+        swipeRefreshLayout.setRefreshing(false);
         gifs.clear();
         gifs.addAll(savedGifs);
         adapter.notifyDataSetChanged();

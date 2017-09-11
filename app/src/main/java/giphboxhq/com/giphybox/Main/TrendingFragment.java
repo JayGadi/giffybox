@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -25,6 +26,8 @@ public class TrendingFragment extends Fragment implements TrendingView {
 
     @BindView(R.id.fragment_trending_recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.fragment_trending_swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private StaggeredGridLayoutManager layoutManager;
     private Unbinder unbinder;
@@ -54,6 +57,13 @@ public class TrendingFragment extends Fragment implements TrendingView {
 
         presenter.getUpvotedGifs();
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.getUpvotedGifs();
+            }
+        });
+
         return view;
 
 
@@ -68,6 +78,7 @@ public class TrendingFragment extends Fragment implements TrendingView {
 
     @Override
     public void loadRatedGifs(List<Gif> savedGifs) {
+        swipeRefreshLayout.setRefreshing(false);
         gifs.clear();
         gifs.addAll(savedGifs);
         adapter.notifyDataSetChanged();

@@ -141,12 +141,12 @@ public class ExploreFragment extends Fragment implements ExploreView {
 
     @Override
     public void showLoading() {
-        loader.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
     public void hideLoading() {
-        loader.setVisibility(View.GONE);
+       swipeRefreshLayout.setRefreshing(false);
     }
 
     private void setupSearchListener(){

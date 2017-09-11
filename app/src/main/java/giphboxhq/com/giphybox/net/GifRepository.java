@@ -1,5 +1,7 @@
 package giphboxhq.com.giphybox.net;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -23,7 +25,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class GifRepository {
-
+    private static final String TAG = "GifRepository";
     private GiphyBoxRestAPI restApi;
     private DbHelper dbHelper;
 
@@ -99,6 +101,11 @@ public class GifRepository {
         return results;
     }
 
+    private void printListRating(List<Gif> gifs, String method){
+        for(Gif gif: gifs){
+            Log.d(TAG, "printList: " + method + " - " + gif.ratingCount);
+        }
+    }
     public List<Gif> getDownvotedGifs(){
         List<Gif> gifs = getRatedGifs();
         List<Gif> results = new ArrayList<>();
