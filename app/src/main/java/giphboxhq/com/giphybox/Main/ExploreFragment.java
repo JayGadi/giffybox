@@ -4,6 +4,7 @@ package giphboxhq.com.giphybox.Main;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -52,6 +53,8 @@ public class ExploreFragment extends Fragment implements ExploreView {
     ProgressBar loader;
     @BindView(R.id.fragment_explore_logout)
     ImageView logout;
+    @BindView(R.id.fragment_explore_swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private StaggeredGridLayoutManager layoutManager;
     private Unbinder unbinder;
@@ -100,6 +103,23 @@ public class ExploreFragment extends Fragment implements ExploreView {
         ((MainActivity)getActivity()).setupMainComponent().inject(this);
 
         presenter.loadFirstTrendingGifsPage();
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
+                if(!isSearching()){
+                    presenter.loadFirstTrendingGifsPage();
+                }else{
+                    if(searchBar.getText().toString().isEmpty()) {
+                        presenter.loadFirstTrendingGifsPage();
+                        setSearching(false);
+                    }else{
+                        presenter.loadFirstSearchPage(searchBar.getText().toString());
+                    }
+                }
+            }
+        });
 
         return view;
     }

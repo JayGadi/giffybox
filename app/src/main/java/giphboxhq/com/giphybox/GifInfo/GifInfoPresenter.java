@@ -72,7 +72,6 @@ public class GifInfoPresenter implements BasePresenter {
             @Override
             public void onNext(SingleGifResponse singleGifResponse) {
                 gif = singleGifResponse.data;
-                view.hideLoading();
                 if(userRepository.getAuthenticatedUser().downvotedGifs.contains(singleGifResponse.data)){
                     view.setDownvoteButtonSelected();
                 }
