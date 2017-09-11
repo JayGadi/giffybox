@@ -41,6 +41,9 @@ public class GifViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private Context context;
     private GifViewHolderClickListener listener;
 
+    private static final int GIF = 0;
+    private static final int EMPTY = 1;
+
     public GifViewAdapter(List<Gif> gifs, Context context) {
         this.gifs = gifs;
         this.context = context;
@@ -55,68 +58,95 @@ public class GifViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.gif_cell, null);
-        return new GifViewHolder(layoutView);
+        View layoutView;
+        RecyclerView.ViewHolder viewHolder = null;
+        switch (viewType) {
+            case GIF:
+                layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.gif_cell, null);
+                viewHolder = new GifViewHolder(layoutView);
+                break;
+            case EMPTY:
+                layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.gif_adapter_empty_view, null);
+                viewHolder = new EmptyViewHolder(layoutView);
+                break;
+        }
+        return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 
-        final GifViewHolder viewHolder = (GifViewHolder)holder;
-        final Gif gif = gifs.get(position);
-        loadGifToGlide(viewHolder.gifImageView, gif, true);
-        viewHolder.gifImageView.setOnTouchListener(new View.OnTouchListener() {
+        switch (getItemViewType(position)) {
+            case GIF:
+                final GifViewHolder viewHolder = (GifViewHolder) holder;
+                final Gif gif = gifs.get(position);
+                loadGifToGlide(viewHolder.gifImageView, gif, true);
+                viewHolder.gifImageView.setOnTouchListener(new View.OnTouchListener() {
 
-            private Timer timer = new Timer();
-            private int LONG_PRESS_TIMEOUT = 300;
-            private boolean wasLong = false;
+                    private Timer timer = new Timer();
+                    private int LONG_PRESS_TIMEOUT = 300;
+                    private boolean wasLong = false;
 
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
 
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            wasLong = true;
-                            loadGifToGlide(viewHolder.gifImageView, gif, false);
+                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                            timer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    wasLong = true;
+                                    loadGifToGlide(viewHolder.gifImageView, gif, false);
+                                }
+                            }, LONG_PRESS_TIMEOUT);
+                            return true;
                         }
-                    }, LONG_PRESS_TIMEOUT);
-                    return true;
-                }
 
-                if(event.getAction() == MotionEvent.ACTION_UP){
-                    timer.cancel();
-                    if(wasLong){
-                        loadGifToGlide(viewHolder.gifImageView, gif, true);
-                        wasLong = false;
-                    }else{
-                        listener.onGifSelected(gifs.get(position));
+                        if (event.getAction() == MotionEvent.ACTION_UP) {
+                            timer.cancel();
+                            if (wasLong) {
+                                loadGifToGlide(viewHolder.gifImageView, gif, true);
+                                wasLong = false;
+                            } else {
+                                listener.onGifSelected(gifs.get(position));
+                            }
+                            timer = new Timer();
+                            return true;
+                        }
+                        return false;
                     }
-                    timer = new Timer();
-                    return true;
-                }
-                return false;
-            }
-        });
+                });
+                break;
+            case EMPTY:
+                final EmptyViewHolder emptyViewHolder = (EmptyViewHolder) holder;
+                loadGifToGlide("https://media0.giphy.com/media/20k1punZ5bpmM/giphy.gif", emptyViewHolder.emptyGifImageView);
+                break;
+        }
+
 
     }
 
-    private void loadGifToGlide(final ImageView gifView, final Gif gif, final boolean asBitmap){
-        ((Activity)context).runOnUiThread(new Runnable() {
+    private void loadGifToGlide(String url, ImageView gifView){
+        Glide.with(context)
+                .load(url)
+                .asGif()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(gifView);
+    }
+    private void loadGifToGlide(final ImageView gifView, final Gif gif, final boolean asBitmap) {
+        ((Activity) context).runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 String url = gif.images.get(IMAGE_TYPE).url;
                 int height = gif.images.get(IMAGE_TYPE).height;
                 int width = gif.images.get(IMAGE_TYPE).width;
-                if(asBitmap){
+                if (asBitmap) {
                     Glide.with(context)
                             .load(url)
                             .asBitmap()
                             .override(width, height)
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .into(gifView);
-                }else{
+                } else {
                     Glide.with(context)
                             .load(url)
                             .asGif()
@@ -129,21 +159,37 @@ public class GifViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return (gifs.size() == 0 ? EMPTY : GIF);
+    }
+
+    @Override
     public int getItemCount() {
-        return gifs.size();
+        return gifs.size() > 0 ? gifs.size() : 1;
     }
 
     public class GifViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.gif_cell_image_view)
         ImageView gifImageView;
+
         public GifViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
     }
 
-    public interface GifViewHolderClickListener{
+    public class EmptyViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.gif_adapter_empty_view_image)
+        ImageView emptyGifImageView;
+        public EmptyViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
+    public interface GifViewHolderClickListener {
         void onGifSelected(Gif gif);
     }
 
