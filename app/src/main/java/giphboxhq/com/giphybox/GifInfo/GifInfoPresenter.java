@@ -72,7 +72,7 @@ public class GifInfoPresenter implements BasePresenter {
             @Override
             public void onNext(SingleGifResponse singleGifResponse) {
                 gif = singleGifResponse.data;
-                view.loadGif(singleGifResponse.data);
+                view.hideLoading();
                 if(userRepository.getAuthenticatedUser().downvotedGifs.contains(singleGifResponse.data)){
                     view.setDownvoteButtonSelected();
                 }
@@ -90,9 +90,11 @@ public class GifInfoPresenter implements BasePresenter {
                     gif.ratingCount = cachedGif.ratingCount;
                     view.updateRatingsLabel(cachedGif.ratingCount);
                 }
+                view.loadGif(singleGifResponse.data);
             }
         });
     }
+
 
     public void onDownvoteGifSelected(){
         User user = userRepository.getAuthenticatedUser();

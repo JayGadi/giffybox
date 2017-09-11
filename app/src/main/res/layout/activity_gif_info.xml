@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,96 +9,64 @@
 
 
     <android.support.v7.widget.Toolbar
+        android:id="@+id/activity_gif_info_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="@color/colorPrimary"
         android:layout_alignParentTop="true"
-        android:theme="@style/ActionBar"
-        android:id="@+id/activity_gif_info_toolbar"/>
+        android:background="@color/colorPrimary"
+        android:theme="@style/ActionBar" />
 
     <ProgressBar
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:id="@+id/activity_gif_info_loader"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-7dp"
-        android:layout_marginBottom="-11dp"
-        android:indeterminate="true"
-        android:visibility="gone"
         android:layout_below="@id/activity_gif_info_toolbar"
-         />
+        android:layout_marginBottom="-11dp"
+        android:layout_marginTop="-7dp"
+        android:indeterminate="true"
+        android:visibility="gone" />
 
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/activity_gif_info_card_view"
+    <com.mindorks.placeholderview.SwipePlaceHolderView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/activity_gif_info_loader"
+        android:layout_centerVertical="true"
         android:layout_above="@+id/activity_gif_info_controls"
-        card_view:cardCornerRadius="4dp"
-        card_view:cardElevation="4dp"
-        card_view:cardUseCompatPadding="true">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/activity_gif_info_gif_view"
-            android:adjustViewBounds="true"
-            android:layout_alignParentTop="true"/>
-
-        <TextView
-            android:layout_below="@+id/activity_gif_info_gif_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/activity_gif_info_rating"
-            android:layout_margin="16dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="16sp"
-            android:gravity="center"
-            />
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
+        android:layout_below="@+id/activity_gif_info_loader"
+        android:id="@+id/activity_gif_info_swipeable_view" />
 
     <LinearLayout
+        android:id="@+id/activity_gif_info_controls"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:id="@+id/activity_gif_info_controls"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <ImageButton
+            android:id="@+id/activity_gif_info_downvote"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="@drawable/circular_button_white"
-            android:id="@+id/activity_gif_info_downvote"
-            android:src="@drawable/ic_thumb_down"
             android:elevation="4dp"
-            />
+            android:src="@drawable/ic_thumb_down" />
 
         <ImageButton
+            android:id="@+id/activity_gif_info_save"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_favorite_filled_in"
             android:background="@drawable/circular_button_white"
-            android:id="@+id/activity_gif_info_save"
             android:elevation="4dp"
-            />
+            android:src="@drawable/ic_favorite_filled_in" />
 
         <ImageButton
+            android:id="@+id/activity_gif_info_upvote"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_thumb_up"
             android:background="@drawable/circular_button_white"
-            android:id="@+id/activity_gif_info_upvote"
             android:elevation="4dp"
-            />
+            android:src="@drawable/ic_thumb_up" />
 
 
     </LinearLayout>

@@ -15,17 +15,20 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+import com.mindorks.placeholderview.SwipeDecor;
+import com.mindorks.placeholderview.SwipePlaceHolderView;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import giphboxhq.com.giphybox.GifCardHelper;
 import giphboxhq.com.giphybox.GiphyBoxApplication;
 import giphboxhq.com.giphybox.R;
 import giphboxhq.com.giphybox.net.models.Gif;
 
-public class GifInfoActivity extends AppCompatActivity implements GifInfoView {
+public class GifInfoActivity extends AppCompatActivity implements GifInfoView, GifCardHelper.SwipeListener {
     private static final String TAG = "GifInfoActivity";
     public static final String GIF_IMAGE_URL = "gif_image_url";
     public static final String GIF_IMAGE_ID = "gif_image_id";
@@ -34,19 +37,19 @@ public class GifInfoActivity extends AppCompatActivity implements GifInfoView {
     Toolbar toolbar;
     @BindView(R.id.activity_gif_info_loader)
     ProgressBar loadIndicator;
-    @BindView(R.id.activity_gif_info_gif_view)
-    ImageView gifView;
     @BindView(R.id.activity_gif_info_downvote)
     ImageButton downvoteButton;
     @BindView(R.id.activity_gif_info_upvote)
     ImageButton upvoteButton;
     @BindView(R.id.activity_gif_info_save)
     ImageButton saveButton;
-    @BindView(R.id.activity_gif_info_rating)
-    TextView ratingLabel;
+    @BindView(R.id.activity_gif_info_swipeable_view)
+    SwipePlaceHolderView swipeableView;
 
     @Inject
     GifInfoPresenter presenter;
+
+    private GifCardHelper gifCardHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,10 @@ public class GifInfoActivity extends AppCompatActivity implements GifInfoView {
                 .userComponent(((GiphyBoxApplication)getApplication()).getUserComponent())
                 .build()
                 .inject(this);
+
+        swipeableView.getBuilder()
+                .setDisplayViewCount(3)
+                .setSwipeDecor(new SwipeDecor());
 
         String id = getIntent().getStringExtra(GIF_IMAGE_ID);
         presenter.loadGifById(id);
@@ -128,15 +135,8 @@ public class GifInfoActivity extends AppCompatActivity implements GifInfoView {
 
     @Override
     public void loadGif(Gif gif) {
-        Glide.with(this)
-                .load(gif.images.get("downsized").url)
-                .into(new GlideDrawableImageViewTarget(gifView){
-                    @Override
-                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
-                        super.onResourceReady(resource, animation);
-                        hideLoading();
-                    }
-                });
+        gifCardHelper = new GifCardHelper(gif, this, swipeableView);
+        swipeableView.addView(gifCardHelper);
     }
 
     @Override
@@ -146,7 +146,9 @@ public class GifInfoActivity extends AppCompatActivity implements GifInfoView {
 
     @Override
     public void updateRatingsLabel(int rating) {
-        ratingLabel.setText("Rating: " + rating);
+        if(gifCardHelper != null){
+            gifCardHelper.setRating(rating);
+        }
     }
 
     @Override
